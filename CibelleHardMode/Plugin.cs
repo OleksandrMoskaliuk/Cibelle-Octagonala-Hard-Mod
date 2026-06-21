@@ -32,6 +32,8 @@ namespace cibelle_hard_mod
             // Apply the Harmony patches
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleStatPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleActionPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(EnemyPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(BattleCleanupPatch), null);
         }
 
         private void Update()
