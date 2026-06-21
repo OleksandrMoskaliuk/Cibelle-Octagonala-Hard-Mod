@@ -44,7 +44,7 @@ namespace cibelle_hard_mod
                     final_strength = UnityEngine.Random.Range(base_strength / 2, base_strength);
                     en_speed = UnityEngine.Random.Range(min_speed, 0.8f);
                     base_max_pleasure = 50;
-                    enemy_base_reward = 55;
+                    enemy_base_reward = 75;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength / 2, base_strength);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 0.8f);
                     break;
@@ -151,7 +151,7 @@ namespace cibelle_hard_mod
 
             // Addively contribute this unique monster's profile to the global encounter payoff pool
             Plugin.BattleReward += enemy_base_reward;
-            Debug.Log("Plugin calculated_bonus = " + calculated_reward_bonus.ToString());
+            //Debug.Log("Plugin calculated_bonus = " + calculated_reward_bonus.ToString());
             // ___REWARD___
 
             if (__instance.randomizeName)
@@ -193,8 +193,8 @@ namespace cibelle_hard_mod
         private static bool Prefix(CibelleBattleWin __instance, ref int ___baseEssenceGain)
         {
             ___baseEssenceGain = 250; // By default
-            Debug.Log("Plugin BattleReward = " + Plugin.BattleReward.ToString());
-            Debug.Log("Plugin Total Essence gain = " + ___baseEssenceGain.ToString());
+            //Debug.Log("Plugin BattleReward = " + Plugin.BattleReward.ToString());
+            //Debug.Log("Plugin Total Essence gain = " + ___baseEssenceGain.ToString());
             ___baseEssenceGain += Plugin.BattleReward;
             return true;
         }
