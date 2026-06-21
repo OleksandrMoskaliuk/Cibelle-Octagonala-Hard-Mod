@@ -44,7 +44,7 @@ namespace cibelle_hard_mod
         // Modded: If cibelle still virgin, pleasure damage 3x
         [global::HarmonyLib.HarmonyPatch(typeof(global::CibelleStats), "PleasureDamageMod")]
         [global::HarmonyLib.HarmonyPrefix]
-        private static bool pleasure_damage_rebalance(CibelleStats __instance, ref float __result)
+        private static bool VirginityBuff(CibelleStats __instance, ref float __result)
         {
             if (__instance.virgin) 
             {
@@ -53,5 +53,75 @@ namespace cibelle_hard_mod
             }
             return true; // skip this buff, since she is not virgin anymore :(
         }
+
+        [global::HarmonyLib.HarmonyPatch(typeof(global::CibelleStats), "IncreasePleasure")]
+        [HarmonyPrefix]
+        public static bool CibellePleasureDamageTaken(CibelleStats __instance, ref int val, PleasureDamageType type)
+        {
+            // Pleasure damage multiplier, the stronger enemies deal more pleasure damage.
+            float m_enemyMultiplier = 1.0f;
+            float m_deviation = 0.75f;
+            switch (Plugin.GlobalEnemyType)
+            {
+                case EnemyType.OldMan:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(0.9f, m_deviation);
+                    break;
+
+                case EnemyType.Villager:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.5f, m_deviation);
+                    break;
+
+                case EnemyType.Soldier:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.8f, m_deviation);
+                    break;
+
+                case EnemyType.Bandit:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.8f, m_deviation);
+                    break;
+
+                case EnemyType.Roughman:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(2.1f, m_deviation);
+                    break;
+
+                case EnemyType.Barroso:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.2f, m_deviation);
+                    break;
+
+                case EnemyType.Goblin:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.0f, m_deviation);
+                    break;
+
+                case EnemyType.Orc:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(2.6f, m_deviation);
+                    break;
+
+                case EnemyType.Werewolf:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.0f, m_deviation);
+                    break;
+
+                case EnemyType.Drakkma:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.4f, m_deviation);
+                    break;
+
+                case EnemyType.Baron:
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.2f, m_deviation);
+                    break;
+
+                default:
+                    m_enemyMultiplier = 1.0f;
+                    break;
+            }
+            Debug.Log(" --- Cibelle Hard Mod  ---  m_enemyMultiplier = " + m_enemyMultiplier.ToString());
+            // Calculate and assign the newly calibrated value directly to the reference parameter
+            float m_calculatedVal = (float)val * m_enemyMultiplier;
+            val = (int)m_calculatedVal;
+
+
+            // Return true so the original IncreasePleasure function runs with your new val
+            return true;
+        }
+
+
     }
+
 }

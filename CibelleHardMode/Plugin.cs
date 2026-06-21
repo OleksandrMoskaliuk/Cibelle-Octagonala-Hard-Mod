@@ -39,6 +39,9 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(MasochismTechConstructorPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(AttackDamageEnemyMultiplier), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleAttackDebuff), null);
+            //global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(PleasureDamageMod), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKNeverTappedOut_ConstructorPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKNeverTappedOut_DescriptionPatch), null);
         }
 
         private void Update()
@@ -95,7 +98,15 @@ namespace cibelle_hard_mod
             return 0.1f + (normalized * 0.9f);
         }
 
-        public static int BattleReward = 0; 
+        public static float CustomFloatRandomWalk(float val, float stepSize)
+        {
+            // Generates a random multiplier drifting between (1 - stepSize) and (1 + stepSize)
+            float m_randomStep = UnityEngine.Random.Range(1f - stepSize, 1f + stepSize);
+            return val * m_randomStep;
+        }
+
+        public static int GlobalBattleReward = 0;
+        public static EnemyType GlobalEnemyType;
 
     }
 

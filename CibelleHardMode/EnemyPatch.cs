@@ -22,13 +22,14 @@ namespace cibelle_hard_mod
             int final_strength = 0;
             int base_max_pleasure = 100;
             int enemy_base_reward = 0;
-            Plugin.BattleReward = 0;
+            Plugin.GlobalBattleReward = 0;
 
             // Clamp each factor strictly between 0.1 and 1.0 via dynamic remapping
             float strength_factor = 0;
             float pleasure_factor = 0;
             float speed_factor = 0;
             float calculated_reward_bonus = 0;
+            Plugin.GlobalEnemyType = __instance.enemyType;
 
             switch (__instance.enemyType)
             {
@@ -39,6 +40,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 25;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength / 4, base_strength);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.0f);
+                    __instance.timesToEjaculate = 1;
                     break;
                 case EnemyType.Villager:
                     final_strength = UnityEngine.Random.Range(base_strength / 2, base_strength);
@@ -47,6 +49,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 75;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength / 2, base_strength);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 0.8f);
+                    __instance.timesToEjaculate = 2;
                     break;
                 case EnemyType.Soldier:
                     final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
@@ -55,6 +58,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 95;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
+                    __instance.timesToEjaculate = 3;
                     break;
                 case EnemyType.Bandit:
                     final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
@@ -63,6 +67,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 110;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
+                    __instance.timesToEjaculate = 3;
                     break;
                 case EnemyType.Roughman:
                     final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
@@ -71,6 +76,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 225;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 0.8f);
+                    __instance.timesToEjaculate = 4;
                     break;
                 case EnemyType.Barroso:
                     final_strength = UnityEngine.Random.Range(base_strength * 4, base_strength * 6);
@@ -79,6 +85,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 475;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 4, base_strength * 6);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
+                    __instance.timesToEjaculate = 6;
                     break;
                 case EnemyType.Goblin:
                     final_strength = UnityEngine.Random.Range(base_strength * 2, base_strength * 4);
@@ -87,6 +94,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 275;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 2, base_strength * 4);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.5f);
+                    __instance.timesToEjaculate = 4;
                     break;
                 case EnemyType.Orc:
                     final_strength = UnityEngine.Random.Range(base_strength * 3, base_strength * 6);
@@ -95,6 +103,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 380;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 3, base_strength * 6);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
+                    __instance.timesToEjaculate = 5;
                     break;
                 case EnemyType.Werewolf:
                     final_strength = UnityEngine.Random.Range(base_strength * 3, base_strength * 6);
@@ -103,6 +112,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 475;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 3, base_strength * 6);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2.2f);
+                    __instance.timesToEjaculate = 6;
                     break;
                 case EnemyType.Drakkma:
                     final_strength = UnityEngine.Random.Range(base_strength * 5, base_strength * 10);
@@ -111,6 +121,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 750;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 5, base_strength * 10);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
+                    __instance.timesToEjaculate = 8;
                     break;
                 case EnemyType.Baron:
                     final_strength = UnityEngine.Random.Range(base_strength * 8, base_strength * 15);
@@ -119,6 +130,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 900;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 8, base_strength * 15);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
+                    __instance.timesToEjaculate = 9;
                     break;
                 default:
                     final_strength = base_strength;
@@ -127,6 +139,7 @@ namespace cibelle_hard_mod
                     enemy_base_reward = 100;
                     strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength);
                     speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
+                    __instance.timesToEjaculate = 1;
                     break;
             }
 
@@ -150,7 +163,7 @@ namespace cibelle_hard_mod
             enemy_base_reward = enemy_base_reward + (int)((float)enemy_base_reward * calculated_reward_bonus);
 
             // Addively contribute this unique monster's profile to the global encounter payoff pool
-            Plugin.BattleReward += enemy_base_reward;
+            Plugin.GlobalBattleReward += enemy_base_reward;
             //Debug.Log("Plugin calculated_bonus = " + calculated_reward_bonus.ToString());
             // ___REWARD___
 
@@ -184,7 +197,21 @@ namespace cibelle_hard_mod
 
             return false;
         }
+
     }
+
+    internal class PleasureDamageMod 
+    {
+        [global::HarmonyLib.HarmonyPatch(typeof(global::EnStats), "IncreasePleasureRandomGeneric")]
+        [global::HarmonyLib.HarmonyPrefix]
+        private static bool IncreasePleasureRandomGenericPrefix(EnStats __instance)
+        {
+            int num = (int)(8f * 1f);
+            int num2 = (int)(12f * 1f);
+            __instance.IncreasePl(UnityEngine.Random.Range(num, num2), PleasureDamageType.Raw);
+            return false;
+        }
+    } 
 
     internal class WinEventReferencePatch
     {
@@ -195,7 +222,7 @@ namespace cibelle_hard_mod
             ___baseEssenceGain = 250; // By default
             //Debug.Log("Plugin BattleReward = " + Plugin.BattleReward.ToString());
             //Debug.Log("Plugin Total Essence gain = " + ___baseEssenceGain.ToString());
-            ___baseEssenceGain += Plugin.BattleReward;
+            ___baseEssenceGain += Plugin.GlobalBattleReward;
             return true;
         }
     }
@@ -207,7 +234,8 @@ namespace cibelle_hard_mod
         [HarmonyPostfix]
         private static void Postfix()
         {
-
+            // Check SkillPatch TSKNeverTappedOut reset resistance after battle
+            HStats.instance.timesClimaxedSinceResting = 0;
         }
     }
 }
