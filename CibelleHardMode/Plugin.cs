@@ -27,7 +27,7 @@ namespace cibelle_hard_mod
 
             // Setup random layout rules if needed
             UnityEngine.Random.InitState(117411);
-            m_LogDat1.rectangle = new global::UnityEngine.Rect(10f + 350f, 10f, 350f, 24f);
+            m_LogDat1.rectangle = new global::UnityEngine.Rect(10f, 10f, 350f, 24f);
 
             // Apply the Harmony patches
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleStatPatch), null);
@@ -37,6 +37,8 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(BattleCleanupPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FortifyTechConstructorPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(MasochismTechConstructorPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(AttackDamageEnemyMultiplier), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleAttackDebuff), null);
         }
 
         private void Update()
