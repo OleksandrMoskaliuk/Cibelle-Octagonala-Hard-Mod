@@ -35,6 +35,8 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(EnemyPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(WinEventReferencePatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(BattleCleanupPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FortifyTechConstructorPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(MasochismTechConstructorPatch), null);
         }
 
         private void Update()
@@ -91,7 +93,7 @@ namespace cibelle_hard_mod
             return 0.1f + (normalized * 0.9f);
         }
 
-        public static int BattleReward = 0;
+        public static int BattleReward = 0; 
 
     }
 
