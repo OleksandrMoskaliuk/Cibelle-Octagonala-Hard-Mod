@@ -235,7 +235,7 @@ namespace cibelle_hard_mod
         private static void Postfix()
         {
             // Check SkillPatch TSKNeverTappedOut reset resistance after battle
-            HStats.instance.timesClimaxedSinceResting = 0;
+            //HStats.instance.timesClimaxedSinceResting = 0;
         }
     }
 }

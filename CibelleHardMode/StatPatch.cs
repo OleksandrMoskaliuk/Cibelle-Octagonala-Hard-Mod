@@ -68,15 +68,15 @@ namespace cibelle_hard_mod
                     break;
 
                 case EnemyType.Villager:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.5f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.2f, m_deviation);
                     break;
 
                 case EnemyType.Soldier:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.8f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.4f, m_deviation);
                     break;
 
                 case EnemyType.Bandit:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.8f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.5f, m_deviation);
                     break;
 
                 case EnemyType.Roughman:
@@ -84,27 +84,27 @@ namespace cibelle_hard_mod
                     break;
 
                 case EnemyType.Barroso:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.2f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.2f, m_deviation);
                     break;
 
                 case EnemyType.Goblin:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.0f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.0f, m_deviation);
                     break;
 
                 case EnemyType.Orc:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(2.6f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.9f, m_deviation);
                     break;
 
                 case EnemyType.Werewolf:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.0f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(5.2f, m_deviation);
                     break;
 
                 case EnemyType.Drakkma:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(3.4f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(6.4f, m_deviation);
                     break;
 
                 case EnemyType.Baron:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.2f, m_deviation);
+                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(7.2f, m_deviation);
                     break;
 
                 default:
