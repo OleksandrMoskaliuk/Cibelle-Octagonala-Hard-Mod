@@ -22,6 +22,32 @@ Developed by **Oleksandr Moskaliuk** ([GitHub](https://github.com/OleksandrMoska
 
 ---
 
+# Cibelle_Hard_Mod v1.1.0 — The Lewd Build Rebalance Update
+
+This update fully overhauls the heroine's pleasure damage calculations and rebalances the lewd skill tree. Passive resistance stacking has been heavily restricted, while enemy offensive capabilities have been increased.
+
+⚔️ Enemy Mechanics & Pleasure Damage Rebalance
+Multiple Ejaculations: Enemies are no longer limited to a single cycle. Each enemy type can now ejaculate multiple times, depending on their specific type.
+
+Unique Damage Multipliers: Every enemy type now has its own unique pleasure damage dealt multiplier.
+
+High-Tier Threat Scaling: High-tier enemies have been explicitly rebalanced to deal significantly more pleasure damage.
+
+🧠 Lewd Skill Tree & Passives Overhaul
+Global Passive Nerf: Total rebalance of the lewd skill tree. Every passive skill that grants baseline pleasure resistance has been nerfed.
+
+NeverTappedOut Adjustments:
+
+Nerfed the base resistance values because the skill previously provided too much mitigation.
+
+Added a strict hard cap: The skill now stacks up to a maximum of 18% Pleasure Resistance.
+
+Orgasmic Resistance Adjustments:
+
+Orgasmic Resistance Tuning: This skill now provides exactly +2% pleasure resistance per orgasm, lasting strictly until the current battle ends.
+
+Skill Tree Progression Unlock: Removed mutual exclusivity from the skill tree. Because baseline difficulty is significantly higher, you can now acquire all available skills on a single profile without having to choose between branches, maximizing build variety.
+
 ## 🛠️ Installation
 
 ### Step 1: Install BepInEx
