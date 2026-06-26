@@ -2,8 +2,6 @@
 
 A complete difficulty and tactical overhaul for **Cibelle**, built on the BepInEx framework. This mod decreases your starting stats, boosts enemy scaling, and introduces dynamic combat mechanics based on outfit durability and desire levels.
 
-Developed by **Oleksandr Moskaliuk** ([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
-
 ---
 
 ## 🎮 Key Features
@@ -62,3 +60,6 @@ Skill Tree Progression Unlock: Removed mutual exclusivity from the skill tree. B
    └── 📁 BepInEx/
        └── 📁 plugins/
            └── 📄 CibelleHardMode.dll
+---
+
+Developed by **Oleksandr Moskaliuk** ([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
