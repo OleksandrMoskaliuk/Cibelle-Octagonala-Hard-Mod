@@ -43,13 +43,12 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(CibelleAttackDebuff), null);
             //global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(PleasureDamageMod), null);
 
+
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FortifyTechConstructorPatch), null);
-
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(MasochismTechConstructorPatch), null);
-
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKNeverTappedOut_ConstructorPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKNeverTappedOut_DescriptionPatch), null);
-
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKConstancy_ConstructorPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKOrgasmicResistance_ConstructorPatch), null); // Less resistance making game far more diffucult
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TreeSkill_SetAvailability_Patch), null); // Remove skill lock
 

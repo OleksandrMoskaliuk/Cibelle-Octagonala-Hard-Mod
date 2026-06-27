@@ -177,6 +177,24 @@ namespace CibelleHardMode.src
 
     }
 
+    internal class TSKConstancy_ConstructorPatch
+    {
+        // TargetConstructor tells Harmony to look for the ctor instead of a regular method
+        [HarmonyTargetMethod]
+        private static System.Reflection.MethodBase TargetConstructor()
+        {
+            return AccessTools.Constructor(typeof(TSKConstancy), new Type[0]);
+        }
+
+        [HarmonyPostfix]
+        private static void Postfix(TSKConstancy __instance)
+        {
+            __instance.pleasureDamageReduction = 0.03f;
+            __instance.pleasureDamageReductionPerLevel = 0.03f;
+            __instance.heatGaugeReduction = 0.08f;
+        }
+
+    }
 
 
 }

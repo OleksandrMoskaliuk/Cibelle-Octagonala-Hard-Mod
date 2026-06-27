@@ -39,7 +39,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_handjob(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.HandjobHR() &&
                 CibelleStats.instance.Corruption() >= 30;
             return false;
@@ -49,7 +49,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_paizuri(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.PaizuriHR() &&
                 CibelleStats.instance.Corruption() >= 50;
             return false;
@@ -59,7 +59,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_fellatio(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.FellatioHR() &&
                 CibelleStats.instance.Corruption() >= 50;
             return false;
@@ -69,7 +69,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_deepthroat(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.DeepthroatHR() &&
                 CibelleStats.instance.Corruption() >= 75;
             return false;
@@ -79,7 +79,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_hotdogging(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.AssHeat() >= HRequirements.HotdoggingHR() &&
                 CibelleStats.instance.Corruption() >= 50;
             return false;
@@ -109,7 +109,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_thigh_sex(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
                 CibelleStats.instance.PussyHeat() >= HRequirements.ThighSexHR() &&
                 CibelleStats.instance.Corruption() >= 40;
             return false;
@@ -119,7 +119,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_breast_grab(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 0f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.CalculateHeatReq(15);
             return false;
         }
@@ -165,7 +165,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_anal_lick(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
                 CibelleStats.instance.AssHeat() >= HRequirements.CalculateHeatReq(50) &&
                 CibelleStats.instance.Corruption() >= 40;
             return false;
@@ -185,7 +185,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_vaginal_fingering(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
                 CibelleStats.instance.PussyHeat() >= HRequirements.CalculateHeatReq(60) &&
                 CibelleStats.instance.Corruption() >= 40;
             return false;
