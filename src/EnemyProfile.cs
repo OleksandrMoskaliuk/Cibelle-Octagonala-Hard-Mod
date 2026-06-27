@@ -25,8 +25,6 @@ namespace CibelleHardMode.src
         public float MaxPleasure { get; private set; }
         public int Level { get; private set; }
 
-        public bool RollOnce = true;
-
         // Master manager layout blueprint constructor
         public EnemyProfile()
         {
@@ -212,7 +210,7 @@ namespace CibelleHardMode.src
         {
             UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
 
-            this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel + 1);
+            this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
             float m_levelProgress = Level;
             float m_statCurveMultiplier = 1.0f + 0.078f * MathF.Pow(m_levelProgress, 1.35f);
 
@@ -224,7 +222,7 @@ namespace CibelleHardMode.src
             MaxStamina = Get(eType).MaxStamina * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
             PleasureAttackMult = Get(eType).PleasureAttackMult * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
             MaxPleasure = Get(eType).MaxPleasure * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
-            TimesToEjaculate = (int)(Get(eType).TimesToEjaculate * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f));
+            TimesToEjaculate = UnityEngine.Mathf.Max((int)(Get(eType).TimesToEjaculate * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f)), 1);
 
             float m_atkRatio = Attack / Get(eType).Attack;
             float m_pAtkRatio = PleasureAttackMult / Get(eType).PleasureAttackMult;
@@ -245,20 +243,24 @@ namespace CibelleHardMode.src
             // Enemy level to display
             Level = UnityEngine.Mathf.Max((int)(Level * m_averageRatio), 1);
 
-            UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
-            UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");
-            UnityEngine.Debug.Log($"Dynamic Final Level : {this.Level} (Initial Walk Progress Roll: {m_levelProgress + 1})");
-            UnityEngine.Debug.Log($"Stat Curve Multiplier : {m_statCurveMultiplier:F4}");
-            UnityEngine.Debug.Log($"Calculated Instance Intensity Ratio : {m_averageRatio * 100f:F1}%");
-            UnityEngine.Debug.Log($"-------------------------------------------------------");
-            UnityEngine.Debug.Log($"Attack                : {this.Attack:F2}  (Base blueprint: {Get(eType).Attack:F2})");
-            UnityEngine.Debug.Log($"Pleasure Attack Mult  : {this.PleasureAttackMult:F2}  (Base blueprint: {Get(eType).PleasureAttackMult:F2})");
-            UnityEngine.Debug.Log($"Speed                 : {this.Speed:F2}  (Base blueprint: {Get(eType).Speed:F2})");
-            UnityEngine.Debug.Log($"Max Stamina           : {this.MaxStamina:F1}  (Base blueprint: {Get(eType).MaxStamina:F1})");
-            UnityEngine.Debug.Log($"Max Pleasure          : {this.MaxPleasure:F1}  (Base blueprint: {Get(eType).MaxPleasure:F1})");
-            UnityEngine.Debug.Log($"Times To Ejaculate    : {this.TimesToEjaculate}  (Base blueprint: {Get(eType).TimesToEjaculate})");
-            UnityEngine.Debug.Log($"Essence Reward Output : {this.Reward}  (Base blueprint: {Get(eType).Reward})");
-            UnityEngine.Debug.Log($"=======================================================");
+            if (false) 
+            {
+                UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
+                UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");
+                UnityEngine.Debug.Log($"Dynamic Final Level : {this.Level} (Initial Walk Progress Roll: {m_levelProgress + 1})");
+                UnityEngine.Debug.Log($"Stat Curve Multiplier : {m_statCurveMultiplier:F4}");
+                UnityEngine.Debug.Log($"Calculated Instance Intensity Ratio : {m_averageRatio * 100f:F1}%");
+                UnityEngine.Debug.Log($"-------------------------------------------------------");
+                UnityEngine.Debug.Log($"Attack                : {this.Attack:F2}  (Base blueprint: {Get(eType).Attack:F2})");
+                UnityEngine.Debug.Log($"Pleasure Attack Mult  : {this.PleasureAttackMult:F2}  (Base blueprint: {Get(eType).PleasureAttackMult:F2})");
+                UnityEngine.Debug.Log($"Speed                 : {this.Speed:F2}  (Base blueprint: {Get(eType).Speed:F2})");
+                UnityEngine.Debug.Log($"Max Stamina           : {this.MaxStamina:F1}  (Base blueprint: {Get(eType).MaxStamina:F1})");
+                UnityEngine.Debug.Log($"Max Pleasure          : {this.MaxPleasure:F1}  (Base blueprint: {Get(eType).MaxPleasure:F1})");
+                UnityEngine.Debug.Log($"Times To Ejaculate    : {this.TimesToEjaculate}  (Base blueprint: {Get(eType).TimesToEjaculate})");
+                UnityEngine.Debug.Log($"Essence Reward Output : {this.Reward}  (Base blueprint: {Get(eType).Reward})");
+                UnityEngine.Debug.Log($"=======================================================");
+            }
+
         }
 
         public static float RunRandomWalk(float m_base, float m_dev)

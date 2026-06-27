@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace cibelle_hard_mod
 {
-    [global::BepInEx.BepInPlugin("CibelleHardMod", "[twitter @Dru9Dealer] Cibelle_Hard_Mod", "1.0.0")]
+    [global::BepInEx.BepInPlugin("CibelleHardMod", "[X/Twitter @Dru9Dealer] Cibelle_Hard_Mod", "1.2.0")]
     [global::BepInEx.BepInProcess("Cibelle.exe")]
     public class Plugin : BepInEx.BaseUnityPlugin
     {

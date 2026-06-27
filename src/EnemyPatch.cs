@@ -11,28 +11,31 @@ namespace CibelleHardMode.src
 {
     internal class EnemyPatch
     {
+        private static readonly object m_rollLock = new object();
+
         [HarmonyPatch(typeof(EnStats), "Start")]
         [HarmonyPrefix]
-        private static bool pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
+        public static bool pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
             ref List<EnemySkill> ___m_skills, ref int ___m_originalBehaviorState)
         {
 
-            // Finalize attributes
 
-            Plugin.m_Enemy.RollInstance(__instance.enemyType);
+            lock (m_rollLock)
+            {
+                Plugin.m_Enemy.RollInstance(__instance.enemyType);
 
-            __instance.m_attackdamage = Plugin.m_Enemy.Attack;
+                __instance.m_attackdamage = Plugin.m_Enemy.Attack;
 
-            __instance.baseSpeed = Plugin.m_Enemy.Speed;
+                __instance.baseSpeed = Plugin.m_Enemy.Speed;
 
-            __instance.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
+                __instance.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
 
-            __instance.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
+                __instance.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
 
-            __instance.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
+                __instance.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
 
-            __instance.m_enpl.SetTo(0);
-
+                __instance.m_enpl.SetTo(0);
+            }
 
             if (__instance.randomizeName)
             {
@@ -153,6 +156,10 @@ namespace CibelleHardMode.src
         {
             // Check SkillPatch TSKNeverTappedOut reset resistance after battle
             //HStats.instance.timesClimaxedSinceResting = 0;
+            if (Plugin.m_Enemy != null) 
+            {
+                //Plugin.m_Enemy.ClearInstance();
+            }
         }
     }
 }
