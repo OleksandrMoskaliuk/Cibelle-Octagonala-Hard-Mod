@@ -21,14 +21,17 @@ namespace cibelle_hard_mod
             Log = base.Logger;
             m_Enemy = new EnemyProfile();
 
-            Difficulty = base.Config.Bind<string>("Game Difficulty", "Difficulty", "hard", "vanilla, normal, hard");
-
-
             // Initialize the logging data object
             m_LogDat1 = new LogData();
             LoggerMessage01 = "[Twitter @Dru9Dealer] Cibelle Hard Mod";
             m_LogDat1.LastMessage = LoggerMessage01;
             m_LogDat1.TimeRamained = 20f;
+
+            // Starting stats
+            Difficulty = base.Config.Bind<string>("Game Difficulty, just gives few extra stats points", "Difficulty", "hard", "vanilla, normal, hard");
+            // Automatically build, bind, and register all 11 configurables from local config
+            m_Enemy.InitializeConfigurableProfiles(base.Config);
+
 
             // Setup random layout rules if needed
             UnityEngine.Random.InitState(117411);
