@@ -11,46 +11,46 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool Prefix(EnStats __instance, ref float __result)
         {
-            // --- YOUR CUSTOM BALANCING ZONE ---
-            // Vanilla scaling baseline factor per player level
-            float LevelModifier = 0.015f;
-            float result = 1f + CibelleStats.instance.level * LevelModifier;
+            __result = 1; // Base multiplier
 
-            // Invoke the private status check methods cleanly via the injected delegates
-            if (__instance.Horny())
-            {
-                result *= 0.45f; // Vanilla default modifier
-            }
-
+             if (__instance.Horny())
+                __result *= 0.75f; // -> 25% less damage
+            
             if (__instance.Angry())
-            {
-                result *= 1.25f; // Vanilla default modifier
-            }
+                __result *= 1.25f; // -> 25% more gamage
 
             // Day/Night Cycle status check
             if (GameManager.instance.GetComponent<DayNightCycle>().IsNight())
             {
-                result *= 1.15f; // Vanilla default modifier
+                __result *= 1.25f; // ->25% more damage 
             }
 
-            float currentDurability = CibelleStats.instance.ClothesDurability();
+            float clothingDamageModifier = 1f - Plugin.NormalizeFactor(CibelleStats.instance.ClothesHP(), 0f, 100 * 4f);
+            __result *= clothingDamageModifier; // -> 0.25 less damage on full clothes durability
 
-            // Linear Formula: Max out at 1.35x when broken (0.0), scale down to 0.35x when pristine (1.0)
-            float maxDamageMult = 1.35f; // Torned clothes
-            float minDamageMult = 0.35f; // Near mint  
-            float clothingDamageModifier = maxDamageMult - (maxDamageMult - minDamageMult) * Mathf.Clamp01(currentDurability);
-
-            // Apply the linear clothing damage scalar directly to the attack profile
-            result *= clothingDamageModifier;
-
-
-            //Pleasure attack debuff same as for Cibelle
-            float maxEnemyPleasure = Plugin.m_Enemy.Get(Plugin.GlobalEnemyType).MaxPleasure; 
-            float pleasureDamageModifier = 1f - Plugin.NormalizeFactor(__instance.CurrentPleasure(), 0f, maxEnemyPleasure * 2); // Max debuff on high pleasure 50% damage loss
+            //Pleasure attack debuff same as for Cibelle           
+            float maxEnemyPleasure = Plugin.m_Enemy.MaxPleasure;
+            float pleasureDamageModifier = 1f - Plugin.NormalizeFactor(__instance.CurrentPleasure(), 0f, maxEnemyPleasure * 4); // Max debuff on high pleasure 25% less damage
             __result *= pleasureDamageModifier;
-            //Debug.Log(" --- Plugin Hard Mode --- _clothingDamageModifier = " + clothingDamageModifier.ToString());
-            // Assign your finalized value to the Harmony return variable framework
-            __result = EnemyProfile.RunRandomWalk(result, 0.35f); //~35% damage so it can be deviated
+
+            // The more times enemie ejaculated the more weak it become in the end
+            float CharismaBonus = UnityEngine.Mathf.Min(CibelleStats.instance.cha * 0.005f, 0.25f); // 30 Charisma equal to 0.15 + 0.10 damage reduction per enemy ejaculation 
+            float EjaculationDebuffMultiplier = 1f - UnityEngine.Mathf.Min(__instance.timesEjaculated * (0.10f + CharismaBonus), 0.9f);
+            __result *= EjaculationDebuffMultiplier;
+           
+            float DamageDev = Plugin.CustomFloatRandomWalk(1f, 0.35f); /// Damage deviation ~35% same as for Cibelle
+            __result *= DamageDev;
+
+            //UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] ATTACK CALCULATION TRACE ======");
+            //UnityEngine.Debug.Log($"Instance Targeted     : {__instance.name} (Ejaculations: {__instance.timesEjaculated})");
+            //UnityEngine.Debug.Log($"Initial Roller Attack : {Plugin.m_Enemy.Attack}");
+            //UnityEngine.Debug.Log($"-------------------------------------------------------");
+            //UnityEngine.Debug.Log($" ClothingDamageModifier =  {clothingDamageModifier}");
+            //UnityEngine.Debug.Log($" PleasureDamageModifier = {pleasureDamageModifier}");
+            //UnityEngine.Debug.Log($" Cha Bonus: {CharismaBonus} EjaculationDebuffMultiplier: {EjaculationDebuffMultiplier}");
+            //UnityEngine.Debug.Log($"-------------------------------------------------------");
+            //UnityEngine.Debug.Log($"Final Output : {__result} )");
+            //UnityEngine.Debug.Log($"=======================================================");
 
             // Returning false prevents the original vanilla method body from running entirely
             return false;
@@ -67,19 +67,27 @@ namespace CibelleHardMode.src
             float cPleasure = __instance.m_pleasure.current;
 
             float VirginDamageModifier = 1f;
-
             if (__instance.virgin) 
-            {
                 VirginDamageModifier *= 2.5f; //Fight for yout virginity! I's imprtant after all !
-            }
+            
+            float pleasureDamageModifier = 1f - Plugin.NormalizeFactor(cPleasure, 0f, 400f); // Max debuff 25% damage loss
+            float DamageDev = Plugin.CustomFloatRandomWalk(1f, 0.35f); /// Damage deviation ~35% same as for enemies
 
-            float pleasureDamageModifier = 1f - Plugin.NormalizeFactor(cPleasure, 0f, 200f); // Max debuff 0.5 damage loss
-            //Debug.Log(" --- Plugin Hard Mode --- CpleasureValue = " + cPleasure.ToString());
+            __result = (5f + __instance.fth * 1.4f) * __instance.AttackModifier * VirginDamageModifier * pleasureDamageModifier * DamageDev;
+
             //Debug.Log(" --- Plugin Hard Mode --- pleasureDamageModifier = " + pleasureDamageModifier.ToString());
+            //Debug.Log(" --- Plugin Hard Mode --- CpleasureValue = " + cPleasure.ToString());
+            // Returning false prevents the original vanilla method body from running entirely
+            return false;
+        }
 
-            // original attack damage calculation applied with our custom scaling factor
-            __result = (5f + __instance.fth * 1.4f) * __instance.AttackModifier * VirginDamageModifier * pleasureDamageModifier;
-            __result = EnemyProfile.RunRandomWalk(__result, 0.35f); // Damage deviation ~35% same as for enemies
+
+        [HarmonyPatch(typeof(CibelleStats), "SpellAmp")]
+        [HarmonyPrefix]
+        public static bool SpellAmpPatch(CibelleStats __instance, ref float __result)
+        {
+            float DamageDev = Plugin.CustomFloatRandomWalk(1f, 0.35f);
+            __result =  (4f + __instance.additionalSpellAmp + (float)__instance.fth * 3f) * DamageDev;
 
             // Returning false prevents the original vanilla method body from running entirely
             return false;
