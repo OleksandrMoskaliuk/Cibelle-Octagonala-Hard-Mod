@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Buffers.Text;
+using System.Collections;
 using System.Collections.Generic;
 using cibelle_hard_mod;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace CibelleHardMode.src
 {
@@ -14,173 +16,27 @@ namespace CibelleHardMode.src
         private static bool pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
             ref List<EnemySkill> ___m_skills, ref int ___m_originalBehaviorState)
         {
-            float num = 0.0075f;
-            int base_strength = (int)(__instance.m_stam * (1f + CibelleStats.instance.level * num));
-            float min_speed = 0.08f;
-
-            Debug.Log(" --- Hard Mod Enemy Base Stamina = " + __instance.m_stam.ToString() + " ---");
-
-            __instance.baseSpeed += CibelleStats.instance.level * min_speed;
-            float en_speed = 0;
-            int final_strength = 0;
-            int base_max_pleasure = 100;
-            int enemy_base_reward = 0;
-            Plugin.GlobalBattleReward = 0;
-
-            // Clamp each factor strictly between 0.1 and 1.0 via dynamic remapping
-            float strength_factor = 0;
-            float pleasure_factor = 0;
-            float speed_factor = 0;
-            float calculated_reward_bonus = 0;
-            Plugin.GlobalEnemyType = __instance.enemyType;
-
-            switch (__instance.enemyType)
-            {
-                case EnemyType.OldMan:
-                    final_strength = UnityEngine.Random.Range(base_strength / 4, base_strength);
-                    en_speed = UnityEngine.Random.Range(min_speed, 1.0f);
-                    base_max_pleasure = 25;
-                    enemy_base_reward = 25;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength / 4, base_strength);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.0f);
-                    __instance.timesToEjaculate = 1;
-                    break;
-                case EnemyType.Villager:
-                    final_strength = UnityEngine.Random.Range(base_strength / 2, base_strength);
-                    en_speed = UnityEngine.Random.Range(min_speed, 0.8f);
-                    base_max_pleasure = 50;
-                    enemy_base_reward = 75;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength / 2, base_strength);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 0.8f);
-                    __instance.timesToEjaculate = 2;
-                    break;
-                case EnemyType.Soldier:
-                    final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
-                    base_max_pleasure = 95;
-                    en_speed = UnityEngine.Random.Range(min_speed, 1.2f);
-                    enemy_base_reward = 95;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
-                    __instance.timesToEjaculate = 3;
-                    break;
-                case EnemyType.Bandit:
-                    final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
-                    en_speed = UnityEngine.Random.Range(min_speed, 1.2f);
-                    base_max_pleasure = 110;
-                    enemy_base_reward = 110;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
-                    __instance.timesToEjaculate = 3;
-                    break;
-                case EnemyType.Roughman:
-                    final_strength = UnityEngine.Random.Range(base_strength, base_strength * 2);
-                    base_max_pleasure = 125;
-                    en_speed = UnityEngine.Random.Range(min_speed, 0.8f);
-                    enemy_base_reward = 225;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength * 2);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 0.8f);
-                    __instance.timesToEjaculate = 4;
-                    break;
-                case EnemyType.Barroso:
-                    final_strength = UnityEngine.Random.Range(base_strength * 4, base_strength * 6);
-                    base_max_pleasure = 225;
-                    en_speed = UnityEngine.Random.Range(min_speed, 2f);
-                    enemy_base_reward = 475;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 4, base_strength * 6);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
-                    __instance.timesToEjaculate = 6;
-                    break;
-                case EnemyType.Goblin:
-                    final_strength = UnityEngine.Random.Range(base_strength * 2, base_strength * 4);
-                    base_max_pleasure = 175;
-                    en_speed = UnityEngine.Random.Range(min_speed, 1.5f);
-                    enemy_base_reward = 275;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 2, base_strength * 4);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.5f);
-                    __instance.timesToEjaculate = 4;
-                    break;
-                case EnemyType.Orc:
-                    final_strength = UnityEngine.Random.Range(base_strength * 3, base_strength * 6);
-                    base_max_pleasure = 225;
-                    en_speed = UnityEngine.Random.Range(min_speed, 2f);
-                    enemy_base_reward = 380;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 3, base_strength * 6);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
-                    __instance.timesToEjaculate = 5;
-                    break;
-                case EnemyType.Werewolf:
-                    final_strength = UnityEngine.Random.Range(base_strength * 3, base_strength * 6);
-                    base_max_pleasure = 200;
-                    en_speed = UnityEngine.Random.Range(min_speed, 2.2f);
-                    enemy_base_reward = 475;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 3, base_strength * 6);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2.2f);
-                    __instance.timesToEjaculate = 6;
-                    break;
-                case EnemyType.Drakkma:
-                    final_strength = UnityEngine.Random.Range(base_strength * 5, base_strength * 10);
-                    base_max_pleasure = 245;
-                    en_speed = UnityEngine.Random.Range(min_speed, 2f);
-                    enemy_base_reward = 750;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 5, base_strength * 10);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
-                    __instance.timesToEjaculate = 8;
-                    break;
-                case EnemyType.Baron:
-                    final_strength = UnityEngine.Random.Range(base_strength * 8, base_strength * 15);
-                    base_max_pleasure = 275;
-                    en_speed = UnityEngine.Random.Range(min_speed, 2f);
-                    enemy_base_reward = 900;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength * 8, base_strength * 15);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 2f);
-                    __instance.timesToEjaculate = 9;
-                    break;
-                default:
-                    final_strength = base_strength;
-                    en_speed = UnityEngine.Random.Range(min_speed, 1.2f);
-                    base_max_pleasure = 100;
-                    enemy_base_reward = 100;
-                    strength_factor = Plugin.NormalizeFactor(final_strength, base_strength, base_strength);
-                    speed_factor = Plugin.NormalizeFactor(en_speed, min_speed, 1.2f);
-                    __instance.timesToEjaculate = 1;
-                    break;
-            }
 
             // Finalize attributes
-            int min_pleasure_range = (int)(base_max_pleasure * 0.65f);
-            int max_pleasure_range = (int)(base_max_pleasure * 1.35f);
-            int max_pleasure = UnityEngine.Random.Range(min_pleasure_range, max_pleasure_range);
 
-            __instance.m_enstam = new Attribute(250, true);
-            __instance.m_enpl = new Attribute(max_pleasure, true);
+            Plugin.m_Enemy.RollInstance(__instance.enemyType);
 
+            __instance.m_attackdamage = Plugin.m_Enemy.Attack;
 
+            __instance.baseSpeed = Plugin.m_Enemy.Speed;
 
-            //Debug.Log(" --- Hard Mod Enemy Base Speed Was = " + __instance.baseSpeed.ToString() + " ---");
+            __instance.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
 
-            //__instance.baseSpeed = Plugin.m_Enemy.Get(EnemyType.Bandit).Speed;
-            __instance.baseSpeed = en_speed;
-            //__instance.m_attackdamage = 45;
-            //Debug.Log(" --- Hard Mod Enemy Base Speed Is = " + __instance.baseSpeed.ToString() + " ---");
+            __instance.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
+
+            __instance.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
+
             __instance.m_enpl.SetTo(0);
 
-            // ___REWARD___
-            pleasure_factor = Plugin.NormalizeFactor(max_pleasure, min_pleasure_range, max_pleasure_range);
-
-            // Sum the factors together and divide by 3 to calculate a clean average multiplier (0.1 to 1.0)
-            calculated_reward_bonus = (strength_factor + pleasure_factor + speed_factor) / 3f;
-
-            // Apply the bonus percentage to the baseline reward configuration
-            enemy_base_reward = enemy_base_reward + (int)(enemy_base_reward * calculated_reward_bonus);
-
-            // Addively contribute this unique monster's profile to the global encounter payoff pool
-            Plugin.GlobalBattleReward += enemy_base_reward;
-            //Debug.Log("Plugin calculated_bonus = " + calculated_reward_bonus.ToString());
-            // ___REWARD___
 
             if (__instance.randomizeName)
             {
-                string text = BattleManager.instance.GetComponent<RandomEnemyNames>().GenerateRandomName(__instance.enemyType) + " " + "Lv10";
+                string text = BattleManager.instance.GetComponent<RandomEnemyNames>().GenerateRandomName(__instance.enemyType) + " Lv" + Plugin.m_Enemy.Level.ToString();
                 if (__instance.GetComponent<Character>() != null)
                 {
                     __instance.GetComponent<Character>().m_name = text;
@@ -222,21 +78,71 @@ namespace CibelleHardMode.src
             __instance.IncreasePl(UnityEngine.Random.Range(num, num2), PleasureDamageType.Raw);
             return false;
         }
-    } 
+    }
 
     internal class WinEventReferencePatch
     {
         [HarmonyPatch(typeof(CibelleBattleWin), "WinEvent")]
         [HarmonyPrefix]
-        private static bool Prefix(CibelleBattleWin __instance, ref int ___baseEssenceGain)
+        private static bool Prefix(
+            CibelleBattleWin __instance,
+            float essenceGivenMod,
+            ref IEnumerator __result,
+            GameObject ___m_winScreen,
+            Transform ___m_winScreenParent,
+            int ___baseEssenceGain)
         {
-            ___baseEssenceGain = 250; // By default
-            //Debug.Log("Plugin BattleReward = " + Plugin.BattleReward.ToString());
-            //Debug.Log("Plugin Total Essence gain = " + ___baseEssenceGain.ToString());
-            ___baseEssenceGain += Plugin.GlobalBattleReward;
-            return true;
+            // Assign our custom routine to the result and return false to completely skip vanilla execution
+            __result = CustomWinEventRoutine(__instance, essenceGivenMod, ___m_winScreen, ___m_winScreenParent, ___baseEssenceGain);
+            return false;
+        }
+
+        private static IEnumerator CustomWinEventRoutine(
+            CibelleBattleWin __instance,
+            float essenceGivenMod,
+            GameObject m_winScreen,
+            Transform m_winScreenParent,
+            int baseEssenceGain)
+        {
+            GameObject wscreen = UnityEngine.Object.Instantiate<GameObject>(m_winScreen, m_winScreenParent);
+            WinScreen script = wscreen.GetComponent<WinScreen>();
+
+            int essenceGiven = (int)(Plugin.m_Enemy.Reward + Plugin.m_Enemy.Reward);
+            Debug.Log("--- HARD MOD --- essenceGivenMod: " + essenceGivenMod.ToString());
+            if (essenceGivenMod > 0f)
+            {
+                essenceGiven =  (int)(Plugin.m_Enemy.Reward + Plugin.m_Enemy.Reward * essenceGivenMod / 25f);
+            }
+
+            script.essenceGained = essenceGiven;
+            AudioManager.instance.PlaySoundEffect("MiscSoundEffects/Retro Event UI 01", 1);
+
+            for (; ; )
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    if (!script.Animating)
+                    {
+                        break;
+                    }
+                    script.SkipAnimation();
+                }
+                yield return null;
+            }
+
+            UnityEngine.Object.Destroy(wscreen);
+
+            if (essenceGiven > 0)
+            {
+                CibelleStats.instance.GainEssence(essenceGiven);
+            }
+
+            yield break;
         }
     }
+
+
+
 
     // --- CLEANUP PATCH ---
     [HarmonyPatch(typeof(BattleManager), "EndBattle")]

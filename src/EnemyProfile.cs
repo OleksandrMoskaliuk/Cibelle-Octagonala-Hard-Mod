@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using cibelle_hard_mod;
 using UnityEngine;
 
 
@@ -40,7 +41,7 @@ namespace CibelleHardMode.src
                 .SetEssenceReward(450)
                 .SetTimesToEjaculate(2)
                 .SetAttack(25f)
-                .SetPleasureAttackMultiplier(1.4f)
+                .SetPleasureAttackMultiplier(1.2f)
                 .SetSpeed(4.5f)
                 .SetMaxStamina(160f)
                 .SetMaxPleasure(100f));
@@ -50,9 +51,9 @@ namespace CibelleHardMode.src
                 .SetEssenceReward(450)
                 .SetTimesToEjaculate(2)
                 .SetAttack(30f)
-                .SetPleasureAttackMultiplier(1.5f)
-                .SetSpeed(5.0f)
-                .SetMaxStamina(200f)
+                .SetPleasureAttackMultiplier(1.4f)
+                .SetSpeed(6f)
+                .SetMaxStamina(160f)
                 .SetMaxPleasure(110f));
 
             Register(new EnemyProfile(EnemyType.Roughman)
@@ -61,8 +62,8 @@ namespace CibelleHardMode.src
                 .SetTimesToEjaculate(3)
                 .SetAttack(40f)
                 .SetPleasureAttackMultiplier(2.1f)
-                .SetSpeed(8f)
-                .SetMaxStamina(300f)
+                .SetSpeed(6f)
+                .SetMaxStamina(230f)
                 .SetMaxPleasure(130f));
 
             Register(new EnemyProfile(EnemyType.Barroso)
@@ -79,9 +80,9 @@ namespace CibelleHardMode.src
                 .SetLevels(1, 10)
                 .SetEssenceReward(900)
                 .SetTimesToEjaculate(2)
-                .SetAttack(30f)
+                .SetAttack(45f)
                 .SetPleasureAttackMultiplier(4.0f)
-                .SetSpeed(22f)
+                .SetSpeed(18f)
                 .SetMaxStamina(250f)
                 .SetMaxPleasure(150f));
 
@@ -137,17 +138,19 @@ namespace CibelleHardMode.src
         public int TimesToEjaculate { get; private set; }
         public float Attack { get; private set; }
         public float PleasureAttackMult { get; private set; }
-        public float MaxSpeed { get; private set; }
+        public float Speed { get; private set; }
         public float MaxStamina { get; private set; }
         public float MaxPleasure { get; private set; }
         public int Level { get; private set; }
+
+        public bool RollOnce = true;
 
         // ---- Blueprint Default Constructor ----
         public EnemyProfile(EnemyType m_type)
         {
             Type = m_type;
             MinLevel = 1; MaxLevel = 1; Reward = 1; TimesToEjaculate = 1;
-            Attack = 1.0f; PleasureAttackMult = 1.0f; MaxSpeed = 1.0f; MaxStamina = 1.0f; MaxPleasure = 1.0f;
+            Attack = 1.0f; PleasureAttackMult = 1.0f; Speed = 1.0f; MaxStamina = 1.0f; MaxPleasure = 1.0f;
         }
 
         // ---- Separated Fluent Setters ----
@@ -156,7 +159,7 @@ namespace CibelleHardMode.src
         public EnemyProfile SetTimesToEjaculate(int m_times) { TimesToEjaculate = m_times; return this; }
         public EnemyProfile SetAttack(float m_val) { Attack = m_val; return this; }
         public EnemyProfile SetPleasureAttackMultiplier(float m_val) { PleasureAttackMult = m_val; return this; }
-        public EnemyProfile SetSpeed(float m_val) { MaxSpeed = m_val; return this; }
+        public EnemyProfile SetSpeed(float m_val) { Speed = m_val; return this; }
         public EnemyProfile SetMaxStamina(float m_val) { MaxStamina = m_val; return this; }
         public EnemyProfile SetMaxPleasure(float m_val) { MaxPleasure = m_val; return this; }
 
@@ -164,33 +167,56 @@ namespace CibelleHardMode.src
         // Call this method whenever a specific combatant spawns to populate the "Current" stat fields.
         public void RollInstance(EnemyType eType)
         {
-            
+
             UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
 
             this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
-            float m_levelProgress = Level - 1;
+            float m_levelProgress = Level;  
             float m_statCurveMultiplier = 1.0f + 0.078f * MathF.Pow(m_levelProgress, 1.35f);
 
-            Attack = Get(eType).Attack + RunRandomWalk(Get(eType).Attack * m_statCurveMultiplier, Get(eType).Attack * m_statCurveMultiplier);
-            MaxSpeed = Get(eType).MaxSpeed + RunRandomWalk(Get(eType).MaxSpeed * m_statCurveMultiplier, Get(eType).MaxSpeed * m_statCurveMultiplier);
-            MaxStamina = Get(eType).MaxStamina + RunRandomWalk(Get(eType).MaxStamina * m_statCurveMultiplier, Get(eType).MaxStamina * m_statCurveMultiplier);
-            PleasureAttackMult = Get(eType).PleasureAttackMult + RunRandomWalk(Get(eType).PleasureAttackMult * m_statCurveMultiplier, Get(eType).PleasureAttackMult * m_statCurveMultiplier);
-            MaxPleasure = Get(eType).MaxPleasure + RunRandomWalk(Get(eType).MaxPleasure * m_statCurveMultiplier, Get(eType).MaxPleasure * m_statCurveMultiplier);
-            TimesToEjaculate = Get(eType).TimesToEjaculate + (int)RunRandomWalk(Get(eType).TimesToEjaculate * m_statCurveMultiplier, Get(eType).TimesToEjaculate * m_statCurveMultiplier);
+            // =========================================================================
+            // DYNAMIC SCALED PARAMETER ASSIGNMENTS
+            // =========================================================================
+            Attack = Get(eType).Attack * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f); 
+            Speed = Get(eType).Speed * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
+            MaxStamina = Get(eType).MaxStamina * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
+            PleasureAttackMult = Get(eType).PleasureAttackMult * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
+            MaxPleasure = Get(eType).MaxPleasure * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f);
+            TimesToEjaculate = (int)(Get(eType).TimesToEjaculate * m_statCurveMultiplier * Plugin.CustomFloatRandomWalk(1, 0.35f));
 
-
-            Reward = 0;
+            // Calculating factors to define Reward
             float m_atkRatio = Attack / Get(eType).Attack;
             float m_pAtkRatio = PleasureAttackMult / Get(eType).PleasureAttackMult;
-            float m_spdRatio = MaxSpeed / Get(eType).MaxSpeed;
+            float m_spdRatio = Speed / Get(eType).Speed;
             float m_stamRatio = MaxStamina / Get(eType).MaxStamina;
             float m_pleasRatio = MaxPleasure / Get(eType).MaxPleasure;
             float m_ejRatio = TimesToEjaculate / Get(eType).TimesToEjaculate;
             float m_levelFactor = Level / Get(eType).MaxLevel;
             float m_averageRatio = (m_atkRatio + m_pAtkRatio + m_spdRatio + m_stamRatio + m_pleasRatio + m_ejRatio + m_levelFactor) / 7f;
 
-            Reward = Get(eType).Reward + (int)(Get(eType).Reward * m_averageRatio);
+            Reward = 0;
+
+            if (GameManager.instance.GetComponent<DayNightCycle>().IsNight()) 
+                Reward = (int)(Get(eType).Reward * m_averageRatio * 1.25f);
+            else
+                Reward = (int)(Get(eType).Reward * m_averageRatio);
+
             Level = (int)(Level * m_averageRatio);
+
+            //UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
+            //UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");
+            //UnityEngine.Debug.Log($"Dynamic Final Level : {this.Level} (Initial Walk Progress Roll: {m_levelProgress + 1})");
+            //UnityEngine.Debug.Log($"Stat Curve Multiplier : {m_statCurveMultiplier:F4}");
+            //UnityEngine.Debug.Log($"Calculated Instance Intensity Ratio : {m_averageRatio * 100f:F1}%");
+            //UnityEngine.Debug.Log($"-------------------------------------------------------");
+            //UnityEngine.Debug.Log($"Attack                : {this.Attack:F2}  (Base blueprint: {Get(eType).Attack:F2})");
+            //UnityEngine.Debug.Log($"Pleasure Attack Mult  : {this.PleasureAttackMult:F2}  (Base blueprint: {Get(eType).PleasureAttackMult:F2})");
+            //UnityEngine.Debug.Log($"Speed                 : {this.Speed:F2}  (Base blueprint: {Get(eType).Speed:F2})");
+            //UnityEngine.Debug.Log($"Max Stamina           : {this.MaxStamina:F1}  (Base blueprint: {Get(eType).MaxStamina:F1})");
+            //UnityEngine.Debug.Log($"Max Pleasure          : {this.MaxPleasure:F1}  (Base blueprint: {Get(eType).MaxPleasure:F1})");
+            //UnityEngine.Debug.Log($"Times To Ejaculate    : {this.TimesToEjaculate}  (Base blueprint: {Get(eType).TimesToEjaculate})");
+            //UnityEngine.Debug.Log($"Essence Reward Output : {this.Reward}  (Base blueprint: {Get(eType).Reward})");
+            //UnityEngine.Debug.Log($"=======================================================");
         }
 
         public static float RunRandomWalk(float m_base, float m_dev)

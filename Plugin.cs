@@ -3,6 +3,7 @@ using CibelleHardMode.src;
 using HarmonyLib;
 using UnityEngine;
 
+
 namespace cibelle_hard_mod
 {
     [global::BepInEx.BepInPlugin("CibelleHardMod", "[twitter @Dru9Dealer] Cibelle_Hard_Mod", "1.0.0")]
@@ -116,8 +117,6 @@ namespace cibelle_hard_mod
             return val * m_randomStep;
         }
 
-        public static int GlobalBattleReward = 0;
-        public static EnemyType GlobalEnemyType;
         public static EnemyProfile m_Enemy = null;
 
     }

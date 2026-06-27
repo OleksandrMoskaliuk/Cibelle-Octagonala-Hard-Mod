@@ -61,62 +61,14 @@ namespace CibelleHardMode.src
         {
             // Pleasure damage multiplier, the stronger enemies deal more pleasure damage.
             float m_enemyMultiplier = 1.0f;
-            float m_deviation = 0.75f;
-            switch (Plugin.GlobalEnemyType)
-            {
-                case EnemyType.OldMan:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(0.9f, m_deviation);
-                    break;
-
-                case EnemyType.Villager:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.2f, m_deviation);
-                    break;
-
-                case EnemyType.Soldier:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.4f, m_deviation);
-                    break;
-
-                case EnemyType.Bandit:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(1.5f, m_deviation);
-                    break;
-
-                case EnemyType.Roughman:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(2.1f, m_deviation);
-                    break;
-
-                case EnemyType.Barroso:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.2f, m_deviation);
-                    break;
-
-                case EnemyType.Goblin:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.0f, m_deviation);
-                    break;
-
-                case EnemyType.Orc:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(4.9f, m_deviation);
-                    break;
-
-                case EnemyType.Werewolf:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(5.2f, m_deviation);
-                    break;
-
-                case EnemyType.Drakkma:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(6.4f, m_deviation);
-                    break;
-
-                case EnemyType.Baron:
-                    m_enemyMultiplier = Plugin.CustomFloatRandomWalk(7.2f, m_deviation);
-                    break;
-
-                default:
-                    m_enemyMultiplier = 1.0f;
-                    break;
-            }
-            Debug.Log(" --- Cibelle Hard Mod  ---  m_enemyMultiplier = " + m_enemyMultiplier.ToString());
+            
             // Calculate and assign the newly calibrated value directly to the reference parameter
-            float m_calculatedVal = val * m_enemyMultiplier;
-            val = (int)m_calculatedVal;
+            if (Plugin.m_Enemy != null) 
+                m_enemyMultiplier = Plugin.m_Enemy.PleasureAttackMult; //Each time this function triggers it will read last PleasureAttackMultiplier from Start()
 
+            val *= (int)m_enemyMultiplier; // Some deviation, same as for damage multipliers
+
+            //Debug.Log(" --- Hard Mod  ---  m_enemyMultiplier = " + m_enemyMultiplier.ToString());
 
             // Return true so the original IncreasePleasure function runs with your new val
             return true;
