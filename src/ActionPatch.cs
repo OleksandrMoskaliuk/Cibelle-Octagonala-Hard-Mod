@@ -39,7 +39,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_handjob(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.HandjobHR() &&
                 CibelleStats.instance.Corruption() >= 30;
             return false;
@@ -59,7 +59,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_fellatio(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 3f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
                 CibelleStats.instance.MouthHeat() >= HRequirements.FellatioHR() &&
                 CibelleStats.instance.Corruption() >= 50;
             return false;
@@ -175,7 +175,7 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         private static bool override_can_anal_fingering(ref bool __result)
         {
-            __result = CibelleStats.instance.GetClothesRipValue() >= 2f &&
+            __result = CibelleStats.instance.GetClothesRipValue() >= 1f &&
                 CibelleStats.instance.AssHeat() >= HRequirements.CalculateHeatReq(60) &&
                 CibelleStats.instance.Corruption() >= 40;
             return false;

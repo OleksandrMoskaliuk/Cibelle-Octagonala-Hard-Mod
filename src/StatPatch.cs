@@ -66,7 +66,10 @@ namespace CibelleHardMode.src
             if (Plugin.m_Enemy != null) 
                 m_enemyMultiplier = Plugin.m_Enemy.PleasureAttackMult; //Each time this function triggers it will read last PleasureAttackMultiplier from Start()
 
-            val *= (int)m_enemyMultiplier; // Some deviation, same as for damage multipliers
+            // -> 0.25 less pleasure damage on full clothes durability
+            float clothingDamageModifier = 1f - Plugin.NormalizeFactor(CibelleStats.instance.ClothesHP(), 0f, 100 * 4f);
+
+            val *= (int)(m_enemyMultiplier * clothingDamageModifier); // Some deviation, same as for damage multipliers
 
             //Debug.Log(" --- Hard Mod  ---  m_enemyMultiplier = " + m_enemyMultiplier.ToString());
 

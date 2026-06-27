@@ -18,9 +18,10 @@ namespace cibelle_hard_mod
 
         private void Awake()
         {
-            Difficulty = base.Config.Bind<string>("Game Difficulty", "Difficulty", "hard", "vanilla, normal, hard");
-            m_Enemy = new EnemyProfile();
             Log = base.Logger;
+            m_Enemy = new EnemyProfile();
+
+            Difficulty = base.Config.Bind<string>("Game Difficulty", "Difficulty", "hard", "vanilla, normal, hard");
 
 
             // Initialize the logging data object

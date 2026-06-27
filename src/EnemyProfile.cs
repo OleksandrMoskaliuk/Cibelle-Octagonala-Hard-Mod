@@ -31,7 +31,7 @@ namespace CibelleHardMode.src
                 .SetEssenceReward(300)
                 .SetTimesToEjaculate(1)
                 .SetAttack(20f)
-                .SetPleasureAttackMultiplier(1.2f)
+                .SetPleasureAttackMultiplier(1.1f)
                 .SetSpeed(3.5f)
                 .SetMaxStamina(90f)
                 .SetMaxPleasure(85f));
@@ -39,7 +39,7 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Soldier)
                 .SetLevels(1, 8)
                 .SetEssenceReward(450)
-                .SetTimesToEjaculate(2)
+                .SetTimesToEjaculate(1)
                 .SetAttack(25f)
                 .SetPleasureAttackMultiplier(1.2f)
                 .SetSpeed(4.5f)
@@ -49,9 +49,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Bandit)
                 .SetLevels(1, 10)
                 .SetEssenceReward(450)
-                .SetTimesToEjaculate(2)
+                .SetTimesToEjaculate(1)
                 .SetAttack(30f)
-                .SetPleasureAttackMultiplier(1.4f)
+                .SetPleasureAttackMultiplier(1.3f)
                 .SetSpeed(6f)
                 .SetMaxStamina(160f)
                 .SetMaxPleasure(110f));
@@ -59,9 +59,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Roughman)
                 .SetLevels(1, 12)
                 .SetEssenceReward(750)
-                .SetTimesToEjaculate(3)
+                .SetTimesToEjaculate(2)
                 .SetAttack(40f)
-                .SetPleasureAttackMultiplier(2.1f)
+                .SetPleasureAttackMultiplier(2.2f)
                 .SetSpeed(6f)
                 .SetMaxStamina(230f)
                 .SetMaxPleasure(130f));
@@ -69,9 +69,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Barroso)
                 .SetLevels(3, 14)
                 .SetEssenceReward(1200)
-                .SetTimesToEjaculate(4)
+                .SetTimesToEjaculate(3)
                 .SetAttack(60f)
-                .SetPleasureAttackMultiplier(4.2f)
+                .SetPleasureAttackMultiplier(2.8f)
                 .SetSpeed(10f)
                 .SetMaxStamina(450f)
                 .SetMaxPleasure(180f));
@@ -81,7 +81,7 @@ namespace CibelleHardMode.src
                 .SetEssenceReward(900)
                 .SetTimesToEjaculate(2)
                 .SetAttack(45f)
-                .SetPleasureAttackMultiplier(4.0f)
+                .SetPleasureAttackMultiplier(2.5f)
                 .SetSpeed(18f)
                 .SetMaxStamina(250f)
                 .SetMaxPleasure(150f));
@@ -91,7 +91,7 @@ namespace CibelleHardMode.src
                 .SetEssenceReward(1200)
                 .SetTimesToEjaculate(3)
                 .SetAttack(60f)
-                .SetPleasureAttackMultiplier(4.9f)
+                .SetPleasureAttackMultiplier(3.0f)
                 .SetSpeed(15f)
                 .SetMaxStamina(420f)
                 .SetMaxPleasure(200f));
@@ -99,9 +99,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Werewolf)
                 .SetLevels(3, 14)
                 .SetEssenceReward(1400)
-                .SetTimesToEjaculate(4)
+                .SetTimesToEjaculate(3)
                 .SetAttack(65f)
-                .SetPleasureAttackMultiplier(5.2f)
+                .SetPleasureAttackMultiplier(3.4f)
                 .SetSpeed(18f)
                 .SetMaxStamina(380f)
                 .SetMaxPleasure(220f));
@@ -109,9 +109,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Drakkma)
                 .SetLevels(4, 16)
                 .SetEssenceReward(2200)
-                .SetTimesToEjaculate(5)
+                .SetTimesToEjaculate(4)
                 .SetAttack(80f)
-                .SetPleasureAttackMultiplier(6.4f)
+                .SetPleasureAttackMultiplier(4.2f)
                 .SetSpeed(20f)
                 .SetMaxStamina(800f)
                 .SetMaxPleasure(300f));
@@ -119,9 +119,9 @@ namespace CibelleHardMode.src
             Register(new EnemyProfile(EnemyType.Baron)
                 .SetLevels(5, 20)
                 .SetEssenceReward(3500)
-                .SetTimesToEjaculate(6)
+                .SetTimesToEjaculate(4)
                 .SetAttack(85f)
-                .SetPleasureAttackMultiplier(7.2f)
+                .SetPleasureAttackMultiplier(5.1f)
                 .SetSpeed(23f)
                 .SetMaxStamina(950f)
                 .SetMaxPleasure(350f));
@@ -201,7 +201,7 @@ namespace CibelleHardMode.src
             else
                 Reward = (int)(Get(eType).Reward * m_averageRatio);
 
-            Level = (int)(Level * m_averageRatio);
+            Level = UnityEngine.Mathf.Max((int)(Level * m_averageRatio), 1); // Enemy level to display
 
             UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
             UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");
