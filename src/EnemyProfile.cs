@@ -167,7 +167,7 @@ namespace CibelleHardMode.src
             
             UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
 
-            Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
+            this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
             float m_levelProgress = Level - 1;
             float m_statCurveMultiplier = 1.0f + 0.078f * MathF.Pow(m_levelProgress, 1.35f);
 
@@ -186,14 +186,11 @@ namespace CibelleHardMode.src
             float m_stamRatio = Stamina / Get(eType).Stamina;
             float m_pleasRatio = maxPleasure / Get(eType).maxPleasure;
             float m_ejRatio = TimesToEjaculate / Get(eType).TimesToEjaculate;
-
-            float m_averageRatio = (m_atkRatio + m_pAtkRatio + m_spdRatio + m_stamRatio + m_pleasRatio + m_ejRatio) / 6f;
-
-            float m_levelSpan = MaxLevel - MinLevel;
-            float m_levelFactor = m_levelSpan > 0 ? (Level - MinLevel) / m_levelSpan : 0f;
-            float m_levelBonus = 1f + m_levelFactor * 0.25f;
+            float m_levelFactor = Level / Get(eType).MaxLevel;
+            float m_averageRatio = (m_atkRatio + m_pAtkRatio + m_spdRatio + m_stamRatio + m_pleasRatio + m_ejRatio + m_levelFactor) / 7f;
 
             Reward = Get(eType).Reward + (int)(Get(eType).Reward * m_averageRatio);
+            Level = (int)(Level * m_averageRatio);
         }
 
         private float RunRandomWalk(float m_base, float m_dev)
