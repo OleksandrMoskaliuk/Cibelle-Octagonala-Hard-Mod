@@ -45,7 +45,7 @@ namespace CibelleHardMode.src
 
             //Debug.Log(" --- Plugin Hard Mode --- _clothingDamageModifier = " + clothingDamageModifier.ToString());
             // Assign your finalized value to the Harmony return variable framework
-            __result = result;
+            __result = EnemyProfile.RunRandomWalk(result, 0.35f); //~35% damage so it can be deviated
 
             // Returning false prevents the original vanilla method body from running entirely
             return false;
