@@ -23,7 +23,7 @@ namespace cibelle_hard_mod
 
             // Initialize the logging data object
             m_LogDat1 = new LogData();
-            LoggerMessage01 = "[Twitter @Dru9Dealer] Cibelle Hard Mod";
+            LoggerMessage01 = "[X/Twitter @Dru9Dealer] Cibelle Hard Mod";
             m_LogDat1.LastMessage = LoggerMessage01;
             m_LogDat1.TimeRamained = 20f;
 
