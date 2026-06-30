@@ -20,10 +20,18 @@ namespace CibelleHardMode.src
             
             if (BattleManager.instance.IsInHState())
                 __result = 3;
-            
+
+            int CibelleSta = CibelleStats.instance.HP();
             int DamageFromEscape = (int)BattleManager.instance.CurrentEnemy().m_attackdamage;
-            CibelleStats.instance.TakeDamage(DamageFromEscape);
-            __result = 0;
+            if (DamageFromEscape < CibelleSta) 
+            {
+                CibelleStats.instance.TakeDamage(DamageFromEscape);
+                __result = 0;
+            }
+            else
+            {
+                __result = 3; //Cibelle cannot escape!
+            }
             //Debug.Log(__instance.GetType().ToString() + ": INFO -- Chance to escape from battle: " + num2.ToString() + ".");
             return false;
         }
