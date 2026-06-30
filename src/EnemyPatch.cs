@@ -11,61 +11,56 @@ namespace CibelleHardMode.src
 {
     internal class EnemyPatch
     {
+
         private static readonly object m_rollLock = new object();
+        [HarmonyPatch(typeof(BattleManager), "StartBattle")]
+        [HarmonyPrefix]
+        private static bool StartBattle_PrefixPatch(ref EnStats _enemy)
+        {
+            Debug.LogWarning(" --- HARD MOD --- BattleManager->StartBattle");
+
+            lock (m_rollLock)
+            {
+                Plugin.m_Enemy.m_instance = _enemy;
+
+                Plugin.m_Enemy.RollInstance();
+
+                _enemy.m_attackdamage = Plugin.m_Enemy.Attack;
+
+                _enemy.baseSpeed = Plugin.m_Enemy.Speed;
+
+                _enemy.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
+
+                _enemy.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
+
+                _enemy.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
+
+                _enemy.m_enpl.SetTo(0);
+
+                if (_enemy.randomizeName)
+                {
+                    string text = BattleManager.instance.GetComponent<RandomEnemyNames>().GenerateRandomName(_enemy.enemyType) + " Lv" + Plugin.m_Enemy.Level.ToString();
+                    if (_enemy.GetComponent<Character>() != null)
+                    {
+                        _enemy.GetComponent<Character>().m_name = text;
+                    }
+                }
+                _enemy.name = _enemy.Name();
+            }
+
+            // Prooceed to work with original function
+            return true;
+        }
+
 
         [HarmonyPatch(typeof(EnStats), "Start")]
         [HarmonyPrefix]
         public static bool pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
             ref List<EnemySkill> ___m_skills, ref int ___m_originalBehaviorState)
         {
+            //Debug.LogWarning(" --- HARD MOD --- EnStats->Start");
+            return true;
 
-
-            lock (m_rollLock)
-            {
-                Plugin.m_Enemy.RollInstance(__instance.enemyType);
-
-                __instance.m_attackdamage = Plugin.m_Enemy.Attack;
-
-                __instance.baseSpeed = Plugin.m_Enemy.Speed;
-
-                __instance.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
-
-                __instance.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
-
-                __instance.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
-
-                __instance.m_enpl.SetTo(0);
-            }
-
-            if (__instance.randomizeName)
-            {
-                string text = BattleManager.instance.GetComponent<RandomEnemyNames>().GenerateRandomName(__instance.enemyType) + " Lv" + Plugin.m_Enemy.Level.ToString();
-                if (__instance.GetComponent<Character>() != null)
-                {
-                    __instance.GetComponent<Character>().m_name = text;
-                }
-            }
-            __instance.name = __instance.Name();
-            int num5 = UnityEngine.Random.Range(0, 5);
-            __instance.m_hpreference = (EnStats.HPreference)num5;
-            if (UnityEngine.Random.value > 0.95f)
-            {
-                ___behaviorState = 150;
-            }
-            else if (UnityEngine.Random.value < 0.05f)
-            {
-                ___behaviorState = -50;
-            }
-            ___Cibelle = BattleManager.instance.GetComponent<CibelleBattleActions>();
-            ___m_skills.Add(new EnemyAttack(__instance));
-            __instance.timesEjaculated = 0;
-            ___m_originalBehaviorState = ___behaviorState;
-
-            AccessTools.Method(typeof(EnStats), "InstantiateSkills").Invoke(__instance, null);
-            AccessTools.Method(typeof(EnStats), "InstantiateUniqueHAction").Invoke(__instance, null);
-            AccessTools.Method(typeof(EnStats), "InstantiateHSkills").Invoke(__instance, null);
-
-            return false;
         }
 
     }
@@ -110,11 +105,11 @@ namespace CibelleHardMode.src
             GameObject wscreen = UnityEngine.Object.Instantiate<GameObject>(m_winScreen, m_winScreenParent);
             WinScreen script = wscreen.GetComponent<WinScreen>();
 
-            int essenceGiven = (int)(Plugin.m_Enemy.Reward + Plugin.m_Enemy.Reward);
+            int essenceGiven = (int)(Plugin.m_Enemy.Reward);
             Debug.Log("--- HARD MOD --- essenceGivenMod: " + essenceGivenMod.ToString());
-            if (essenceGivenMod > 0f)
+            if (essenceGivenMod > 1f)
             {
-                essenceGiven =  (int)(Plugin.m_Enemy.Reward + Plugin.m_Enemy.Reward * essenceGivenMod / 25f);
+                essenceGiven =  (int)(Plugin.m_Enemy.Reward * CibelleStats.instance.essenceGainModifierH);
             }
 
             script.essenceGained = essenceGiven;
@@ -156,10 +151,12 @@ namespace CibelleHardMode.src
         {
             // Check SkillPatch TSKNeverTappedOut reset resistance after battle
             //HStats.instance.timesClimaxedSinceResting = 0;
-            if (Plugin.m_Enemy != null) 
+            if (CibelleStats.instance != null) 
             {
-                //Plugin.m_Enemy.ClearInstance();
+                CibelleStats.instance.m_sp.max = 7 + (int)(CibelleStats.instance.level * 0.1f);
+                CibelleStats.instance.m_sp.current = CibelleStats.instance.m_sp.max;
             }
+           
         }
     }
 }
