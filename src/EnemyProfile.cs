@@ -170,17 +170,18 @@ namespace CibelleHardMode.src
         public void InitializeConfigurableProfiles(ConfigFile m_config)
         {
             // Process configuration pipeline registration across all 11 default values
-            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,   3,  250,  1,  15f,  0.9f,  2.5f,   60f,    50f));
-            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,   5,  300,  1,  20f,  1.1f,  3.5f,   90f,    85f));
-            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,   8,  450,  1,  25f,  1.2f,  4.5f,  160f,   100f));
-            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,  10,  450,  1,  30f,  1.3f,    6f,  160f,   110f));
-            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,  12,  750,  2,  40f,  2.2f,    6f,  230f,   130f));
-            Register(BindProfileConfig(m_config, EnemyType.Barroso,  3,  14, 1200,  3,  60f,  2.8f,   10f,  450f,   180f));
-            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,  10,  900,  2,  45f,  2.5f,   18f,  250f,   150f));
-            Register(BindProfileConfig(m_config, EnemyType.Orc,      2,  12, 1200,  3,  60f,  3.0f,   15f,  420f,   200f));
-            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 3,  14, 1400,  3,  65f,  3.4f,   18f,  380f,   220f));
-            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  4,  16, 2200,  4,  80f,  4.2f,   20f,  800f,   300f));
-            Register(BindProfileConfig(m_config, EnemyType.Baron,    5,  20, 3500,  4,  85f,  5.1f,   23f,  950f,   350f));
+            //                                                  MinLv_  MaxLv_ Reward_ TEj_  Atk_ PMult_   Spd_ MaxStm_  MaxPls_
+            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,      5,    150,   1,  15f,  1.0f,    3f,    90f,    25f));
+            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,     10,    300,   1,  20f,  2.0f,  4.5f,   120f,    50f));
+            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,     15,    600,   1,  25f,  2.5f,  5.0f,   190f,   100f));
+            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,     20,    750,   1,  30f,  2.7f,  6.0f,   200f,   150f));
+            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,     25,   1450,   2,  45f,  3.2f, 10.0f,   420f,   200f));
+            Register(BindProfileConfig(m_config, EnemyType.Barroso,  1,     25,   3600,   3,  60f,  3.7f, 12.0f,   650f,   250f));
+            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,     30,   2000,   2,  55f,  4.0f, 18.0f,   550f,   200f));
+            Register(BindProfileConfig(m_config, EnemyType.Orc,      1,     35,   3500,   3,  75f,  4.5f, 15.0f,   720f,   250f));
+            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 1,     40,   4800,   3,  85f,  5.2f, 18.0f,   980f,   200f));
+            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  1,     45,   8000,   4,  95f,  5.8f, 20.0f,  1000f,   300f));
+            Register(BindProfileConfig(m_config, EnemyType.Baron,    1,     50,  16500,   6, 100f,  6.2f, 23.0f,  1250f,   300f));
         }
 
         private EnemyProfile BindProfileConfig(ConfigFile m_config, EnemyType m_type, int m_defMinLvl, int m_defMaxLvl, int m_defReward, int m_defEjac, float m_defAtk, float m_defPlsMult, float m_defSpd, float m_defStam, float m_defPls)
