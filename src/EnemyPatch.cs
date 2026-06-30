@@ -1,11 +1,8 @@
-﻿using System;
-using System.Buffers.Text;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using cibelle_hard_mod;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace CibelleHardMode.src
 {
@@ -22,19 +19,13 @@ namespace CibelleHardMode.src
             lock (m_rollLock)
             {
                 Plugin.m_Enemy.m_instance = _enemy;
-
                 Plugin.m_Enemy.RollInstance();
 
                 _enemy.m_attackdamage = Plugin.m_Enemy.Attack;
-
                 _enemy.baseSpeed = Plugin.m_Enemy.Speed;
-
                 _enemy.m_enstam = new Attribute((int)Plugin.m_Enemy.MaxStamina, true);
-
                 _enemy.m_enpl = new Attribute((int)Plugin.m_Enemy.MaxPleasure, true);
-
-                _enemy.timesToEjaculate = Plugin.m_Enemy.TimesToEjaculate;
-
+                _enemy.timesToEjaculate = (int)Plugin.m_Enemy.TimesToEjaculate;
                 _enemy.m_enpl.SetTo(0);
 
                 if (_enemy.randomizeName)

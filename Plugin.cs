@@ -59,6 +59,8 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FirecrackerTech_ConstructorPatch), null); 
 
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKPleasureResistance_ConstructorPatch), null); // Remove skill lock
+
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TryToRunFromBattle_Patch), null); //Escape from battle patch
         }
 
         private void Update()
