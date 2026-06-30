@@ -75,7 +75,36 @@ Enemy performance shifts dynamically in real-time based on their psychological s
 
 ---
 
-Developed by **Oleksandr Moskaliuk** ([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
+# Cibelle Hard Mod v1.2.1 — Stability, Mechanics & Balance Update
+
+Welcome to version 1.2.1. This update resolves a major timing issue with how enemy statistics were calculated, introduces new tactical mechanics like a fleeing system, and implements comprehensive balance updates to make combat more dynamic and fair.
+
+> ⚠️ **Notice:** Because base stats and enemy profiles have been heavily adjusted, you **MUST delete your old config file** at `BepInEx\config\CibelleHardMod.cfg` before running the game so a fresh, optimized configuration can generate properly on startup.
+
+---
+
+## 🛠️ Core Fixes & Technical Improvements
+
+* **Fixed Unpredictable Enemy Stats:** Found a bug where enemy stats were rolling at the wrong time (global launch), causing them to behave wildly or glitch out. Stats now roll correctly through independent `EnemyProfile` instances right when a battle starts, making enemy attributes and rewards perfectly stable.
+* **Level Cap System:** Implemented an explicit leveling cap using per-enemy minimum and maximum brackets. This keeps early gameplay fair by preventing high-level, unbeatable enemies from spawning while Cibelle's own level is low.
+* **Ejaculation Mechanic Precision:** Converted `TimesToEjaculate` internally to a decimal (float) value to properly support random variations and multipliers during enemy generation. For example, if an enemy's initial roll gets multiplied to a 1.9 or 2.1 at the start of battle, it will round naturally to 2.
+
+---
+
+## ⚔️ New Features & Gameplay Tweaks
+
+* **New Running Mechanic:** Escaping from combat via the new `TryToRunFromBattle` logic is now noticeably easier to pull off successfully, but running away comes at a cost—Cibelle will take a final penalty hit from the enemy as she flees.
+* **Spell Point Resource Update:** Maximum Spell Points (SP) now scale alongside Cibelle’s level. Additionally, all of your SP will be fully restored automatically at the end of a battle, letting you head into the next encounter prepared.
+* **High-Risk Night Cycles:** Nighttime exploration is now significantly more dangerous—and rewarding. Monsters hunting after dark receive a massive **2.5x stat multiplier**, but surviving the encounter multiplies your victory essence reward by **2.75x**.
+
+---
+
+## ⚖️ Balance & Skill Adjustments
+
+* **FirecrackerTech Adjustment:** Rebalanced for better tactical variety—increased the maximum damage potential, slightly lowered the minimum baseline damage, and introduced a **1-turn cooldown** restriction.
+* **Total Base Stats Rebalance:** Completely re-tuned all default baseline attributes and adjusted base ejaculation counts across all enemy profiles to establish a much smoother, better-balanced difficulty progression curve for this entire update.
+
+([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
 
 ## 🛠️ Installation
 
