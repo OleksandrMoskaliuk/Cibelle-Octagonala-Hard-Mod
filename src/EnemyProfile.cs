@@ -20,7 +20,7 @@ namespace CibelleHardMode.src
         public int MinLevel { get; private set; }
         public int MaxLevel { get; private set; }
         public int Reward { get; private set; }
-        public int TimesToEjaculate { get; private set; }
+        public float TimesToEjaculate { get; private set; }
         public float Attack { get; private set; }
         public float PleasureAttackMult { get; private set; }
         public float Speed { get; private set; }
@@ -149,7 +149,7 @@ namespace CibelleHardMode.src
         public EnemyProfile(EnemyType m_type)
         {
             Type = m_type;
-            MinLevel = 1; MaxLevel = 2; Reward = 250; TimesToEjaculate = 1;
+            MinLevel = 1; MaxLevel = 2; Reward = 100; TimesToEjaculate = 1f;
             Attack = 10.0f; PleasureAttackMult = 1.0f; Speed = 1.0f; MaxStamina = 100.0f; MaxPleasure = 100.0f;
         }
 
@@ -159,7 +159,7 @@ namespace CibelleHardMode.src
         // ---- Separated Fluent Setters ----
         public EnemyProfile SetLevels(int m_min, int m_max) { MinLevel = m_min; MaxLevel = m_max; return this; }
         public EnemyProfile SetEssenceReward(int m_reward) { Reward = m_reward; return this; }
-        public EnemyProfile SetTimesToEjaculate(int m_times) { TimesToEjaculate = m_times; return this; }
+        public EnemyProfile SetTimesToEjaculate(float m_times) { TimesToEjaculate = m_times; return this; }
         public EnemyProfile SetAttack(float m_val) { Attack = m_val; return this; }
         public EnemyProfile SetPleasureAttackMultiplier(float m_val) { PleasureAttackMult = m_val; return this; }
         public EnemyProfile SetSpeed(float m_val) { Speed = m_val; return this; }
@@ -170,27 +170,28 @@ namespace CibelleHardMode.src
         public void InitializeConfigurableProfiles(ConfigFile m_config)
         {
             // Process configuration pipeline registration across all 11 default values
-            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,   3,  250,  1,  15f,  0.9f,  2.5f,   60f,    50f));
-            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,   5,  300,  1,  20f,  1.1f,  3.5f,   90f,    85f));
-            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,   8,  450,  1,  25f,  1.2f,  4.5f,  160f,   100f));
-            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,  10,  450,  1,  30f,  1.3f,    6f,  160f,   110f));
-            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,  12,  750,  2,  40f,  2.2f,    6f,  230f,   130f));
-            Register(BindProfileConfig(m_config, EnemyType.Barroso,  3,  14, 1200,  3,  60f,  2.8f,   10f,  450f,   180f));
-            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,  10,  900,  2,  45f,  2.5f,   18f,  250f,   150f));
-            Register(BindProfileConfig(m_config, EnemyType.Orc,      2,  12, 1200,  3,  60f,  3.0f,   15f,  420f,   200f));
-            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 3,  14, 1400,  3,  65f,  3.4f,   18f,  380f,   220f));
-            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  4,  16, 2200,  4,  80f,  4.2f,   20f,  800f,   300f));
-            Register(BindProfileConfig(m_config, EnemyType.Baron,    5,  20, 3500,  4,  85f,  5.1f,   23f,  950f,   350f));
+            //                                                  MinLv_  MaxLv_ Reward_  TEj_  Atk_ PMult_   Spd_ MaxStm_  MaxPls_
+            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,      5,    150,    1,  15f,  1.0f,    3f,    90f,    25f));
+            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,     10,    300, 1.2f,  20f,  2.0f,  4.5f,   120f,    50f));
+            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,     15,    600, 1.4f,  25f,  2.5f,  5.0f,   190f,   100f));
+            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,     17,    750, 1.5f,  30f,  2.7f,  6.0f,   200f,   120f));
+            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,     22,   1450, 2.2f,  45f,  3.2f, 10.0f,   420f,   180f));
+            Register(BindProfileConfig(m_config, EnemyType.Barroso,  1,     25,   3600, 2.5f,  60f,  3.7f, 12.0f,   650f,   200f));
+            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,     30,   2000, 2.1f,  55f,  4.0f, 18.0f,   550f,   180f));
+            Register(BindProfileConfig(m_config, EnemyType.Orc,      1,     35,   3500, 2.8f,  75f,  4.5f, 15.0f,   720f,   200f));
+            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 1,     40,   4800, 3.2f,  85f,  5.2f, 18.0f,   980f,   220f));
+            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  1,     45,   8000, 3.8f,  95f,  5.8f, 20.0f,  1000f,   240f));
+            Register(BindProfileConfig(m_config, EnemyType.Baron,    1,     50,  16500, 4.2f, 100f,  6.2f, 23.0f,  1250f,   250f));
         }
 
-        private EnemyProfile BindProfileConfig(ConfigFile m_config, EnemyType m_type, int m_defMinLvl, int m_defMaxLvl, int m_defReward, int m_defEjac, float m_defAtk, float m_defPlsMult, float m_defSpd, float m_defStam, float m_defPls)
+        private EnemyProfile BindProfileConfig(ConfigFile m_config, EnemyType m_type, int m_defMinLvl, int m_defMaxLvl, int m_defReward, float m_defEjac, float m_defAtk, float m_defPlsMult, float m_defSpd, float m_defStam, float m_defPls)
         {
             string m_section = $"Enemy Profile - {m_type}";
 
             int m_cfgMinLvl = m_config.Bind(m_section, "Min Level", m_defMinLvl, $"Minimum base spawn level for {m_type}").Value;
             int m_cfgMaxLvl = m_config.Bind(m_section, "Max Level", m_defMaxLvl, $"Maximum base spawn level for {m_type}").Value;
             int m_cfgReward = m_config.Bind(m_section, "Essence Reward", m_defReward, $"Base essence reward given by {m_type}").Value;
-            int m_cfgEjac = m_config.Bind(m_section, "Times To Ejaculate", m_defEjac, $"Base orgasm iterations required to defeat {m_type}").Value;
+            float m_cfgEjac = m_config.Bind(m_section, "Times To Ejaculate", m_defEjac, $"Base orgasm iterations required to defeat {m_type}").Value;
             float m_cfgAtk = m_config.Bind(m_section, "Attack Damage", m_defAtk, $"Base physical combat attack damage for {m_type}").Value;
             float m_cfgPlsMult = m_config.Bind(m_section, "Pleasure Attack Multiplier", m_defPlsMult, $"Base sexual damage multiplier for {m_type}").Value;
             float m_cfgSpd = m_config.Bind(m_section, "Movement Speed", m_defSpd, $"Base action speed for {m_type}").Value;
@@ -218,9 +219,24 @@ namespace CibelleHardMode.src
 
             UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
 
-            this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
-            float m_levelProgress = Level;
-            float m_statCurveMultiplier = 1.0f + 0.078f * MathF.Pow(m_levelProgress, 1.35f);
+            int CibelleLevel = CibelleStats.instance.level + 1;
+            int MaxEnLv = (int)UnityEngine.Mathf.Min(CibelleLevel, Get(eType).MaxLevel);
+            
+            bool isNight = false;
+            if (GameManager.instance.GetComponent<DayNightCycle>() != null)
+                isNight = (GameManager.instance.GetComponent<DayNightCycle>().IsNight());
+
+            if (isNight)
+                this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, (int)(MaxEnLv * 2.5f));
+            else
+                this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, MaxEnLv);
+
+            float m_statCurveMultiplier = 1.0f;
+
+            if (isNight)
+                m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f)) * 2.5f;
+            else
+                m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f));
 
             // =========================================================================
             // DYNAMIC SCALED PARAMETER ASSIGNMENTS
@@ -237,14 +253,12 @@ namespace CibelleHardMode.src
             float m_spdRatio = Speed / Get(eType).Speed;
             float m_stamRatio = MaxStamina / Get(eType).MaxStamina;
             float m_pleasRatio = MaxPleasure / Get(eType).MaxPleasure;
-            float m_ejRatio = TimesToEjaculate / (float)Get(eType).TimesToEjaculate;
-            float m_levelFactor = Level / (float)Get(eType).MaxLevel;
+            float m_ejRatio = TimesToEjaculate / Get(eType).TimesToEjaculate;
+            float m_levelFactor = Level / (float)MaxEnLv;
             float m_averageRatio = (m_atkRatio + m_pAtkRatio + m_spdRatio + m_stamRatio + m_pleasRatio + m_ejRatio + m_levelFactor) / 7f;
 
-            Reward = 0;
-
-            if (GameManager.instance.GetComponent<DayNightCycle>().IsNight())
-                Reward = (int)(Get(eType).Reward * m_averageRatio * 1.25f);
+            if (isNight)
+                Reward = (int)(Get(eType).Reward * m_averageRatio * 2.75f);
             else
                 Reward = (int)(Get(eType).Reward * m_averageRatio);
 
@@ -255,7 +269,8 @@ namespace CibelleHardMode.src
             {
                 UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
                 UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");
-                UnityEngine.Debug.Log($"Dynamic Final Level : {this.Level} (Initial Walk Progress Roll: {m_levelProgress + 1})");
+                UnityEngine.Debug.Log($"Dynamic Final Level : {this.Level} (Initial Walk Progress Roll: {Get(eType).MaxLevel})");
+                UnityEngine.Debug.Log($"Is Night Time? : {isNight}");
                 UnityEngine.Debug.Log($"Stat Curve Multiplier : {m_statCurveMultiplier:F4}");
                 UnityEngine.Debug.Log($"Calculated Instance Intensity Ratio : {m_averageRatio * 100f:F1}%");
                 UnityEngine.Debug.Log($"-------------------------------------------------------");
