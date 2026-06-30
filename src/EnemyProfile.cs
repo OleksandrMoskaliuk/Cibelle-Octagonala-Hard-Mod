@@ -12,8 +12,11 @@ namespace CibelleHardMode.src
     {
         private readonly Dictionary<EnemyType, EnemyProfile> m_profiles = new Dictionary<EnemyType, EnemyProfile>();
 
+        public EnStats m_instance = null;
+
         // ---- Blueprint Definition Fields ----
         public EnemyType Type { get; private set; }
+
         public int MinLevel { get; private set; }
         public int MaxLevel { get; private set; }
         public int Reward { get; private set; }
@@ -146,8 +149,8 @@ namespace CibelleHardMode.src
         public EnemyProfile(EnemyType m_type)
         {
             Type = m_type;
-            MinLevel = 1; MaxLevel = 1; Reward = 1; TimesToEjaculate = 1;
-            Attack = 1.0f; PleasureAttackMult = 1.0f; Speed = 1.0f; MaxStamina = 1.0f; MaxPleasure = 1.0f;
+            MinLevel = 1; MaxLevel = 2; Reward = 250; TimesToEjaculate = 1;
+            Attack = 10.0f; PleasureAttackMult = 1.0f; Speed = 1.0f; MaxStamina = 100.0f; MaxPleasure = 100.0f;
         }
 
         private void Register(EnemyProfile m_profile) { m_profiles[m_profile.Type] = m_profile; }
@@ -206,8 +209,13 @@ namespace CibelleHardMode.src
         }
 
         // ---- Instance Generation Engine ----
-        public void RollInstance(EnemyType eType)
+        public void RollInstance()
         {
+            if (m_instance == null)
+                return;
+
+            EnemyType eType = this.m_instance.enemyType;
+
             UnityEngine.Random.InitState(Guid.NewGuid().GetHashCode());
 
             this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, Get(eType).MaxLevel);
@@ -243,7 +251,7 @@ namespace CibelleHardMode.src
             // Enemy level to display
             Level = UnityEngine.Mathf.Max((int)(Level * m_averageRatio), 1);
 
-            if (false) 
+            if (true) 
             {
                 UnityEngine.Debug.LogWarning($"====== [CIBELLE HARD MOD] LIVE ROLL ENGINE DEBUG ======");
                 UnityEngine.Debug.Log($"Enemy Spawning Type : {eType}");

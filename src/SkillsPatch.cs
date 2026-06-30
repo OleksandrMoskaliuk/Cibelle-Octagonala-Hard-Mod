@@ -196,5 +196,25 @@ namespace CibelleHardMode.src
 
     }
 
+    internal class FirecrackerTech_ConstructorPatch
+    {
+        // TargetConstructor tells Harmony to look for the ctor instead of a regular method
+        [HarmonyTargetMethod]
+        private static System.Reflection.MethodBase TargetConstructor()
+        {
+            return AccessTools.Constructor(typeof(FirecrackerTech), new Type[0]);
+        }
+
+        [HarmonyPostfix]
+        private static void Postfix(FirecrackerTech __instance)
+        {
+            __instance.damagemin = 1;
+            __instance.damagemax = 22;
+            __instance.damagePerSkillLevel = 8;
+            __instance.cooldown = 1;
+        }
+
+    }
+
 
 }
