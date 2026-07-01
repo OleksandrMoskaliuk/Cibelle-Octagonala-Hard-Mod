@@ -56,7 +56,8 @@ namespace cibelle_hard_mod
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKConstancy_ConstructorPatch), null);
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKOrgasmicResistance_ConstructorPatch), null); // Less resistance making game far more diffucult
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TreeSkill_SetAvailability_Patch), null); // Remove skill lock
-            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FirecrackerTech_ConstructorPatch), null); 
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(FirecrackerTech_ConstructorPatch), null);
+            global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(EndureDesireTech_ConstructorPatch), null);
 
             global::HarmonyLib.Harmony.CreateAndPatchAll(typeof(TSKPleasureResistance_ConstructorPatch), null); // Remove skill lock
 

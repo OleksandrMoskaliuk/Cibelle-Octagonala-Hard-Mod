@@ -216,5 +216,23 @@ namespace CibelleHardMode.src
 
     }
 
+    internal class EndureDesireTech_ConstructorPatch
+    {
+        // TargetConstructor tells Harmony to look for the ctor instead of a regular method
+        [HarmonyTargetMethod]
+        private static System.Reflection.MethodBase TargetConstructor()
+        {
+            return AccessTools.Constructor(typeof(EndureDesireTech), new Type[0]);
+        }
+
+        [HarmonyPostfix]
+        private static void Postfix(EndureDesireTech __instance)
+        {
+            __instance.heatDecrease = 0.20f;
+            __instance.heatDecreasePerLevel = 0.1f;
+        }
+
+    }
+
 
 }

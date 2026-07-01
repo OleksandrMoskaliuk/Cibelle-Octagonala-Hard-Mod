@@ -14,7 +14,7 @@ namespace CibelleHardMode.src
         {
             // Read the BepInEx configuration string
             string selectedDifficulty = Plugin.Difficulty.Value.ToLower().Trim();
-
+            __instance.maxPleasureResistance = 0.99f;
             if (selectedDifficulty == "hard")
             {
                 __instance.vit = 1;
@@ -75,6 +75,16 @@ namespace CibelleHardMode.src
 
             // Return true so the original IncreasePleasure function runs with your new val
             return true;
+        }
+
+        static public void UpdateSP(CibelleStats instance) 
+        {
+            // Restore SpellPoints after batte
+            if (CibelleStats.instance != null)
+            {
+                CibelleStats.instance.m_sp.max = 7 + (int)(CibelleStats.instance.level * 0.1f);
+                CibelleStats.instance.m_sp.current = CibelleStats.instance.m_sp.max;
+            }
         }
 
 

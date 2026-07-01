@@ -30,7 +30,7 @@ namespace CibelleHardMode.src
             }
             else
             {
-                __result = 3; //Cibelle cannot escape!
+                __result = 1; // Cibelle failed to escape from battle!
             }
             //Debug.Log(__instance.GetType().ToString() + ": INFO -- Chance to escape from battle: " + num2.ToString() + ".");
             return false;

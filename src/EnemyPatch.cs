@@ -50,6 +50,7 @@ namespace CibelleHardMode.src
             ref List<EnemySkill> ___m_skills, ref int ___m_originalBehaviorState)
         {
             //Debug.LogWarning(" --- HARD MOD --- EnStats->Start");
+            CibelleStatPatch.UpdateSP(CibelleStats.instance);
             return true;
 
         }
