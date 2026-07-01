@@ -171,17 +171,17 @@ namespace CibelleHardMode.src
         {
             // Process configuration pipeline registration across all 11 default values
             //                                                  MinLv_  MaxLv_ Reward_  TEj_  Atk_ PMult_   Spd_ MaxStm_  MaxPls_
-            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,      5,    150,    1,  10f,  0.5f,    3f,    90f,    25f));
-            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,     10,    300, 1.2f,  15f,  0.9f,  4.5f,   120f,    30f));
-            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,     15,    600, 1.4f,  20f,  1.2f,  5.0f,   190f,    35f));
-            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,     17,    750, 1.5f,  25f,  1.8f,  6.0f,   200f,    40f));
-            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,     22,   1450, 2.2f,  30f,  2.2f, 10.0f,   420f,    55f));
-            Register(BindProfileConfig(m_config, EnemyType.Barroso,  1,     25,   3600, 2.5f,  35f,  3.0f, 12.0f,   650f,    90f));
-            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,     30,   2000, 2.1f,  40f,  3.2f, 18.0f,   550f,    60f));
-            Register(BindProfileConfig(m_config, EnemyType.Orc,      1,     35,   3500, 2.8f,  45f,  4.0f, 15.0f,   720f,    70f));
-            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 1,     40,   4800, 3.2f,  50f,  4.8f, 18.0f,   980f,    80f));
-            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  1,     45,   8000, 3.8f,  55f,  5.3f, 20.0f,  1000f,   105f));
-            Register(BindProfileConfig(m_config, EnemyType.Baron,    1,     50,  16500, 4.2f,  60f,  6.0f, 23.0f,  1250f,   110f));
+            Register(BindProfileConfig(m_config, EnemyType.OldMan,   1,      5,    150,    1,  10f,  0.5f,    3f,    90f,    15f));
+            Register(BindProfileConfig(m_config, EnemyType.Villager, 1,      8,    300, 1.2f,  15f,  0.9f,  4.5f,   120f,    20f));
+            Register(BindProfileConfig(m_config, EnemyType.Soldier,  1,      9,    450, 1.4f,  20f,  1.2f,  5.0f,   190f,    25f));
+            Register(BindProfileConfig(m_config, EnemyType.Bandit,   1,      9,    750, 1.6f,  25f,  1.8f,  6.0f,   200f,    30f));
+            Register(BindProfileConfig(m_config, EnemyType.Roughman, 1,      9,    900, 1.8f,  30f,  2.2f,  8.0f,   420f,    35f));
+            Register(BindProfileConfig(m_config, EnemyType.Barroso,  1,     10,   2800, 2.2f,  35f,  3.0f, 10.0f,   650f,    40f));
+            Register(BindProfileConfig(m_config, EnemyType.Goblin,   1,      9,   1200, 2.0f,  40f,  3.2f, 12.0f,   320f,    45f));
+            Register(BindProfileConfig(m_config, EnemyType.Orc,      1,     10,   1900, 2.2f,  45f,  4.0f, 10.0f,   720f,    50f));
+            Register(BindProfileConfig(m_config, EnemyType.Werewolf, 1,     11,   2300, 2.4f,  50f,  4.8f, 15.0f,   980f,    50f));
+            Register(BindProfileConfig(m_config, EnemyType.Drakkma,  1,     12,   4500, 2.6f,  55f,  5.3f, 17.0f,  1000f,    60f));
+            Register(BindProfileConfig(m_config, EnemyType.Baron,    1,     12,   7500, 3.0f,  60f,  6.0f, 19.0f,  1250f,    70f));
         }
 
         private EnemyProfile BindProfileConfig(ConfigFile m_config, EnemyType m_type, int m_defMinLvl, int m_defMaxLvl, int m_defReward, float m_defEjac, float m_defAtk, float m_defPlsMult, float m_defSpd, float m_defStam, float m_defPls)
@@ -227,14 +227,14 @@ namespace CibelleHardMode.src
                 isNight = (GameManager.instance.GetComponent<DayNightCycle>().IsNight());
 
             if (isNight)
-                this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, (int)(MaxEnLv * 2.5f));
+                this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, (int)(MaxEnLv * 1.25f));
             else
                 this.Level = UnityEngine.Random.Range(Get(eType).MinLevel, MaxEnLv);
 
-            float m_statCurveMultiplier = 1.0f;
+            float m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f));
 
             if (isNight)
-                m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f)) * 2.5f;
+                m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f)) * 1.25f;
             else
                 m_statCurveMultiplier = (1.0f + 0.078f * MathF.Pow(Level, 1.35f));
 
@@ -258,12 +258,12 @@ namespace CibelleHardMode.src
             float m_averageRatio = (m_atkRatio + m_pAtkRatio + m_spdRatio + m_stamRatio + m_pleasRatio + m_ejRatio + m_levelFactor) / 7f;
 
             if (isNight)
-                Reward = (int)(Get(eType).Reward * m_averageRatio * 2.75f);
+                Reward = (int)(Get(eType).Reward * (m_averageRatio * 1.25f) * 1.25f);
             else
-                Reward = (int)(Get(eType).Reward * m_averageRatio);
+                Reward = (int)(Get(eType).Reward * (m_averageRatio * 1.25f));
 
             // Enemy level to display
-            Level = UnityEngine.Mathf.Max((int)(Level * m_averageRatio), 1);
+            Level = UnityEngine.Mathf.Max((int)(Level * (m_averageRatio * 1.75f)), 1);
 
             if (true) 
             {

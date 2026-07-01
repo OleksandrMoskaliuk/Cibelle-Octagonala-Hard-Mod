@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Buffers.Text;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CibelleHardMode.src
 {
@@ -52,7 +54,7 @@ namespace CibelleHardMode.src
         private static void Postfix(TSKNeverTappedOut __instance)
         {
             __instance.resistancePerOrgasm = 0.01f;
-            __instance.resistancePerOrgasmPerLevel = 0.01f;
+            __instance.resistancePerOrgasmPerLevel = 0.01f; // will be max possible resistance
         }
 
     }
@@ -65,6 +67,9 @@ namespace CibelleHardMode.src
         [HarmonyPrefix]
         public static bool TSKNeverTappedOut_UpdateDescriptionPatch(TSKNeverTappedOut __instance)
         {
+            var m_resMethod = AccessTools.MethodDelegate<Func<int, float>>(AccessTools.Method(typeof(TSKNeverTappedOut), "_res"), __instance);
+            int SkillLv = __instance.ThisSkillLevel() + 1;
+            string text0 =  Utilf.FloatToStringPercent((m_resMethod(SkillLv)), "F0") + " Pleasure Resistance.";
             __instance.description = string.Concat(new string[]
             {
             __instance.name,
@@ -72,14 +77,14 @@ namespace CibelleHardMode.src
             UIManager.instance.ColorBlue("Passive "),
             "] Each successive orgasm increases Cibelle's ",
             UIManager.instance.ColorBlue("Pleasure Resistance"),
-            ".\nThis bonus resets upon resting.",
-             ".\nStacks up to 18% Pleasure Resistance."
+            ".\nThis bonus resets upon resting",
+             ".\nStacks up to : ",
+             UIManager.instance.ColorBlue(text0)
             });
-            var m_resMethod = AccessTools.MethodDelegate<Func<int, float>>(AccessTools.Method(typeof(TSKNeverTappedOut), "_res"), __instance);
 
-            string text = UIManager.instance.ColorBlue("Pleasure Res. per orgasm: ") + "+" + Utilf.FloatToStringPercent(m_resMethod(0), "F0");
-            string text2 = UIManager.instance.ColorBlue("Pleasure Res. per orgasm: ") + "+" + Utilf.FloatToStringPercent(m_resMethod(1), "F0");
-            __instance.AppendCurrentLevel(__instance.ThisSkillLevel(), new string[] { text });
+            string text1 = UIManager.instance.ColorBlue("Max Pleasure Resistance: ") + "+" + Utilf.FloatToStringPercent(m_resMethod(SkillLv), "F0");
+            string text2 = UIManager.instance.ColorBlue("Max Pleasure Resistance: ") + "+" + Utilf.FloatToStringPercent(m_resMethod(SkillLv + 1), "F0");
+            __instance.AppendCurrentLevel(__instance.ThisSkillLevel(), new string[] { text1 });
             __instance.AppendNextLevel(__instance.ThisSkillLevel(), new string[] { text2 });
 
             return false;
@@ -90,12 +95,25 @@ namespace CibelleHardMode.src
         private static bool PleasureResistPatch(TSKNeverTappedOut __instance, ref int level, ref float __result)
         {
             float pl_resistance_bonus = (__instance.resistancePerOrgasm + __instance.resistancePerOrgasmPerLevel * level) * HStats.instance.timesClimaxedSinceResting;
-            __result = Mathf.Min(0.18f, pl_resistance_bonus); // Stacks up to 18% Pleasure Resistance.
+            var m_resMethod = AccessTools.MethodDelegate<Func<int, float>>(AccessTools.Method(typeof(TSKNeverTappedOut), "_res"), __instance);
+            int SkillLv = __instance.ThisSkillLevel();
+            __result = Mathf.Min(m_resMethod(SkillLv), pl_resistance_bonus); // Stacks up to 18% Pleasure Resistance.
             return false;
         }
 
-    }
+        [HarmonyPatch(typeof(TSKNeverTappedOut), "_res")]
+        [HarmonyPrefix]
+        private static bool prefix_res(ref int inc, ref float __result, TSKNeverTappedOut __instance)
+        {
+            // Resistat Per Level
+            int Level = inc;
+            // (float)(__instance.ThisSkillLevel()
+            __result = __instance.resistancePerOrgasm + __instance.resistancePerOrgasmPerLevel * Level * 4f;
 
+            return false; // Bypass original function
+        }
+
+    }
 
     internal class TSKOrgasmicResistance_ConstructorPatch
     {
