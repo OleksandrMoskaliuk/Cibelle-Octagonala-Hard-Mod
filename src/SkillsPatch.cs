@@ -59,6 +59,8 @@ namespace CibelleHardMode.src
 
     internal class TSKNeverTappedOut_DescriptionPatch
     {
+
+
         [HarmonyPatch(typeof(TSKNeverTappedOut), "UpdateDescription")]
         [HarmonyPrefix]
         public static bool TSKNeverTappedOut_UpdateDescriptionPatch(TSKNeverTappedOut __instance)
@@ -88,9 +90,7 @@ namespace CibelleHardMode.src
         private static bool PleasureResistPatch(TSKNeverTappedOut __instance, ref int level, ref float __result)
         {
             float pl_resistance_bonus = (__instance.resistancePerOrgasm + __instance.resistancePerOrgasmPerLevel * level) * HStats.instance.timesClimaxedSinceResting;
-            float max_possible_pl_resistance_buff = 18f;
-            __result = Mathf.Min(18f, max_possible_pl_resistance_buff);
-
+            __result = Mathf.Min(0.18f, pl_resistance_bonus); // Stacks up to 18% Pleasure Resistance.
             return false;
         }
 

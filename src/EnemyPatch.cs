@@ -46,13 +46,11 @@ namespace CibelleHardMode.src
 
         [HarmonyPatch(typeof(EnStats), "Start")]
         [HarmonyPrefix]
-        public static bool pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
+        public static void pleasure_damage_rebalance(EnStats __instance, ref int ___behaviorState, ref CibelleBattleActions ___Cibelle,
             ref List<EnemySkill> ___m_skills, ref int ___m_originalBehaviorState)
         {
             //Debug.LogWarning(" --- HARD MOD --- EnStats->Start");
             CibelleStatPatch.UpdateSP(CibelleStats.instance);
-            return true;
-
         }
 
     }
@@ -141,14 +139,63 @@ namespace CibelleHardMode.src
         [HarmonyPostfix]
         private static void Postfix()
         {
-            // Check SkillPatch TSKNeverTappedOut reset resistance after battle
-            //HStats.instance.timesClimaxedSinceResting = 0;
-            if (CibelleStats.instance != null) 
-            {
-                CibelleStats.instance.m_sp.max = 7 + (int)(CibelleStats.instance.level * 0.1f);
-                CibelleStats.instance.m_sp.current = CibelleStats.instance.m_sp.max;
-            }
-           
+            CibelleStatPatch.UpdateSP(CibelleStats.instance);
+            //// Restore HP(Stamina) after battle 
+            //int MaxHp = CibelleStats.instance.MaxHP();
+            //if (CibelleStats.instance.HasSpell(new HealingSpell()))
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKRestoration())) 
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKVirtue()))
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+
+            //// Resore Pleasure after battle
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKConstancy()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKEndureDesire()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKPleasureResistant()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKNeverTappedOut()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKPleasureResistant()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+
+            //// Restore HP(Stamina) after battle 
+            //int MaxHp = CibelleStats.instance.MaxHP();
+            //if (CibelleStats.instance.HasSpell(new HealingSpell()))
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKRestoration())) 
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKVirtue()))
+            //    CibelleStats.instance.m_hp.IncreaseBy(MaxHp / 3);
+
+
+            //// Resore Pleasure after battle
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKConstancy()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKEndureDesire()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKPleasureResistant()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKNeverTappedOut()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
+
+            //if (CibelleStats.instance.HasPassiveSkill(new TSKPleasureResistant()))
+            //    CibelleStats.instance.m_pleasure.ReduceBy(100 / 5);
         }
     }
 }
