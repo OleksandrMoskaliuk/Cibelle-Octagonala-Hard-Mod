@@ -75,36 +75,43 @@ Enemy performance shifts dynamically in real-time based on their psychological s
 
 ---
 
-# Cibelle Hard Mod v1.2.1 — Stability, Mechanics & Balance Update
+# Cibelle Hard Mod v1.2.3 — Stability, Mechanics & Balance Update
 
-Welcome to version 1.2.1. This update resolves a major timing issue with how enemy statistics were calculated, introduces new tactical mechanics like a fleeing system, and implements comprehensive balance updates to make combat more dynamic and fair.
+This update incorporates extensive playtest adjustments based on the last release, resolving critical skill calculation bugs, fine-tuning the high-stakes nighttime mechanics, and implementing a comprehensive stat rebalance to provide a smooth yet challenging difficulty curve.
 
-> ⚠️ **Notice:** Because base stats and enemy profiles have been heavily adjusted, you **MUST delete your old config file** at `BepInEx\config\CibelleHardMod.cfg` before running the game so a fresh, optimized configuration can generate properly on startup.
+> ⚠️ **Notice:** Because base stats, enemy profiles, and stat tracking systems have been heavily rewritten, **a New Game is required** for this update to work correctly. Additionally, you **MUST delete your old config file** at `BepInEx\config\CibelleHardMod.cfg` before starting so a fresh, optimized configuration can generate properly on startup.
 
+---
+ℹ️ Compatibility Note: This plugin was developed and tested specifically for game version 0.22.
 ---
 
 ## 🛠️ Core Fixes & Technical Improvements
 
 * **Fixed Unpredictable Enemy Stats:** Found a bug where enemy stats were rolling at the wrong time (global launch), causing them to behave wildly or glitch out. Stats now roll correctly through independent `EnemyProfile` instances right when a battle starts, making enemy attributes and rewards perfectly stable.
+* **Skill Calculation Fix (`TSKNeverTappedOut`):** Resolved an underlying calculation error in the `TSKNeverTappedOut` skill that was causing pleasure resistance stacks to apply incorrectly.
 * **Level Cap System:** Implemented an explicit leveling cap using per-enemy minimum and maximum brackets. This keeps early gameplay fair by preventing high-level, unbeatable enemies from spawning while Cibelle's own level is low.
 * **Ejaculation Mechanic Precision:** Converted `TimesToEjaculate` internally to a decimal (float) value to properly support random variations and multipliers during enemy generation. For example, if an enemy's initial roll gets multiplied to a 1.9 or 2.1 at the start of battle, it will round naturally to 2.
+* **Correct SpellPoints Update:** Resolved an underlying bug in the data tracking loops to ensure your total Spell Points now update and display flawlessly alongside level gains.
 
 ---
 
 ## ⚔️ New Features & Gameplay Tweaks
 
 * **New Running Mechanic:** Escaping from combat via the new `TryToRunFromBattle` logic is now noticeably easier to pull off successfully, but running away comes at a cost—Cibelle will take a final penalty hit from the enemy as she flees.
+* **Fleeing Low-Health Fix:** Fixed a critical bug that was breaking or locking up the running logic when trying to retreat from a battle while at low health.
 * **Spell Point Resource Update:** Maximum Spell Points (SP) now scale alongside Cibelle’s level. Additionally, all of your SP will be fully restored automatically at the end of a battle, letting you head into the next encounter prepared.
-* **High-Risk Night Cycles:** Nighttime exploration is now significantly more dangerous—and rewarding. Monsters hunting after dark receive a massive **2.5x stat multiplier**, but surviving the encounter multiplies your victory essence reward by **2.75x**.
+* **Balanced Night Cycles:** Reworked nighttime exploration mechanics. Enemies encountered after dark are now **25% stronger** and have an **increased chance to spawn at higher levels**. Surviving these high-risk encounters now awards **25% more victory essence**.
 
 ---
 
 ## ⚖️ Balance & Skill Adjustments
 
-* **FirecrackerTech Adjustment:** Rebalanced for better tactical variety—increased the maximum damage potential, slightly lowered the minimum baseline damage, and introduced a **1-turn cooldown** restriction.
-* **Total Base Stats Rebalance:** Completely re-tuned all default baseline attributes and adjusted base ejaculation counts across all enemy profiles to establish a much smoother, better-balanced difficulty progression curve for this entire update.
+* **`TSKNeverTappedOut` Rebalance:** Completely reworked the skill behavior. It now grants "Max Pleasure Resistance" directly, and the total amount of pleasure resistance you can stack per forced orgasm is strictly capped based on your invested skill points.
+* **Skill Adjustments & Buffs:** Rebalanced multiple skill nodes across the unlocked tree. This includes boosting the overall effectiveness magnitude of **EndureDesireTech** and adjusting **FirecrackerTech** (increased maximum damage potential, slightly lower minimum baseline damage, and introduced a **1-turn cooldown** restriction).
+* **Extended Pleasure Resistance Cap:** Raised the hard ceiling for maximum pleasure resistance, allowing it to scale all the way up to **99** to give defensive vitality/corruption builds more breathing room.
+* **Total Enemy Attribute & MaxPleasure Tune-up:** Performed a global balance sweep across all enemy profiles. Enemy `MaxPleasure` pools and core base statistics have been thoroughly re-tuned to be more reasonable—eliminating artificial spikes while ensuring encounters remain strictly tactical and demanding.
 
-([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
+* ([GitHub](https://github.com/OleksandrMoskaliuk) | X/Twitter: [@Dru9Dealer](https://twitter.com/Dru9Dealer))
 
 ## 🛠️ Installation
 
